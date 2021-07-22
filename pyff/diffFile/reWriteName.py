@@ -14,12 +14,12 @@ class ReWriteName(ast.NodeTransformer):
         self.keywords = ['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue',
                          'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import',
                          'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while',
-                         'with', 'yield']
+                         'with', 'yield','list','dict','tuple','int','str','long','bool']
         self.featureList = ['isinstance', 'type', 'globals', 'locals', 'dir', '__dir__', 'isclass',
                             'ismethod', 'isfunction', 'getattr', '__getattribute__', 'hasattr',
                             'issubclass', 'super', 'vars', 'delattr', '__delattr__', 'setattr',
                             '__setattr__', 'property', 'reload', '__import__', 'input', 'eval',
-                            'exec', 'compile', 'execfile']
+                            'exec', 'compile', 'execfile','any','all']
 
     def generic_visit(self, node):
 

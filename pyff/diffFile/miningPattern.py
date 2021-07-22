@@ -48,7 +48,6 @@ class pyCodeDiff:
         c = lcslen(x, y)
         self.codeDiff(c, x, y, len(x) - 1, len(y) - 1)
 
-
 def getFileList(file_dir):
     L = []
     for root, dirs, files in os.walk(file_dir):
@@ -57,15 +56,14 @@ def getFileList(file_dir):
                 L.append(os.path.join(root, file))
     return L
 
-
-def readCode(code): # AST syntax rule
+def readCode(code):  # AST syntax rule
     if len(code.splitlines()) == 1:
         code = code.splitlines()[0].strip()
         if code.startswith('if') or code.startswith('for') or code.startswith('with'):
             code = code + 'pass'
     else:
         tag = 0
-        for index in range(0,len(code)):
+        for index in range(0, len(code)):
             if code[index] != ' ':
                 tag = index
                 break
@@ -75,7 +73,7 @@ def readCode(code): # AST syntax rule
         code = temp.strip()
     return code
 
-def renameCode(delCode,addCode):
+def renameCode(delCode, addCode):
     buggyCodeAST = ast.parse(delCode).body
     visitor = ReWriteName()
     for node in buggyCodeAST:
@@ -87,10 +85,11 @@ def renameCode(delCode,addCode):
         funNode = visitor.visit(node)
         fixedCode = astunparse.unparse(funNode)
 
-    return buggyCode,fixedCode
+    return buggyCode, fixedCode
 
 def getLocalVar(L):
     global addCode, delCode
+    count = 0
 
     for i in range(0, len(L) - 1, 2):
         if L[i].endswith('bug.py'):
@@ -107,20 +106,46 @@ def getLocalVar(L):
             except Exception as e:
                 continue
 
-        if delCode == '' or delCode == '\n' or delCode == '\n\n': continue #print(buggyPath)  # bug code is null
-        if addCode == '' or addCode == '\n' or addCode == '\n\n':  continue #print(buggyPath)  # fixed code is null
+        if delCode == '' or delCode == '\n' or delCode == '\n\n': continue  # print(buggyPath)  # bug code is null
+        if addCode == '' or addCode == '\n' or addCode == '\n\n':  continue  # print(buggyPath)  # fixed code is null
 
         delCode = readCode(delCode)
         addCode = readCode(addCode)
 
-        if delCode == addCode: continue # move bug code location
+        if delCode == addCode: continue  # move bug code location
+
+        # try:
+        #     buggyCode, fixedCode = renameCode(delCode, addCode)
+        #     # print('\n',buggyPath)
+        #     # print(delCode)
+        #     # print(addCode.strip())
+        #
+        #     # keywords = ['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue',
+        #     #              'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import',
+        #     #              'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while',
+        #     #              'with', 'yield','list','dict','tuple','int','str','long','bool']
+        #     # featureList = ['isinstance', 'type', 'globals', 'locals', 'dir', '__dir__', 'isclass',
+        #     #                 'ismethod', 'isfunction', 'getattr', '__getattribute__', 'hasattr',
+        #     #                 'issubclass', 'super', 'vars', 'delattr', '__delattr__', 'setattr',
+        #     #                 '__setattr__', 'property', 'reload', '__import__', 'input', 'eval',
+        #     #                 'exec', 'compile', 'execfile']
+        #     # for i in featureList:
+        #     if (' in ' in buggyCode and 'any' not in buggyCode) and \
+        #            ('any' in fixedCode and ' is ' not in fixedCode) :
+        #         count = count + 1
+        #         # print(buggyCode)
+        #         # print(fixedCode)
+        #         # print('________________________________')
+        # except:
+        #     pass
 
 
-        if len(delCode.splitlines()) == 1 and len(addCode.splitlines()) == 1: # len(delCode) + len(addCode) = 6
+        if len(delCode.splitlines()) == 1 and len(addCode.splitlines()) == 1:  # len(delCode) + len(addCode) = 6
             try:
                 delCodeAST = ast.parse(delCode)
-                if str(delCodeAST.body[0]).startswith('<_ast.For'): # AST type
-                    buggyCode,fixedCode = renameCode(delCode,addCode)
+                if str(delCodeAST.body[0]).startswith('<_ast.If'):  # AST type
+                    count = count + 1
+                    buggyCode, fixedCode = renameCode(delCode, addCode)
 
                     print('\n',buggyPath)
                     print(delCode)
@@ -129,7 +154,7 @@ def getLocalVar(L):
                     print(fixedCode)
                     print('________________________________')
 
-                    if buggyCode.splitlines()[1] == "'s'": continue # typo bugs
+                    if buggyCode.splitlines()[1] == "'s'": continue  # typo bugs
                     if fixedCode.splitlines()[1] == "'s'": continue
 
                     delCodeDict[buggyPath] = set()
@@ -144,13 +169,13 @@ def getLocalVar(L):
                 # elif str(delCodeAST.body[0]).startswith('<_ast.For'):
                 # elif str(delCodeAST.body[0]).startswith('<_ast.If'):
                 # elif str(delCodeAST.body[0]).startswith('<_ast.With'):
-
             except:
-                # if delCode.startswith('except'): print(len(delCode.splitlines()),len(addCode.splitlines()))
+                # if delCode.startswith('except'):  print(len(delCode.splitlines()),len(addCode.splitlines()))
                 pass
 
         addCode = ''
         delCode = ''
+    print(count)
 
 def compare(delCodeDict):
     from collections import defaultdict
@@ -306,7 +331,7 @@ def compare(delCodeDict):
         # print(treeTxt)
         return treeTxt
 
-    count1 = 0
+    resultList = set()
 
     for i in range(0, len(list(enumerate(delCodeDict))) - 1):
         temp = set()
@@ -331,27 +356,41 @@ def compare(delCodeDict):
             text2 = bulidTree(data2)
 
             text1, text2 = map(Tree.from_text, [text1, text2])
-            apted = APTED(text1, text2, PerEditOperationConfig(1, 1, 1))  # del_cost, ins_cost, ren_cost
+            apted = APTED(text1, text2, PerEditOperationConfig(1, 1, 100))  # del_cost, ins_cost, ren_cost
             ted = apted.compute_edit_distance()
 
-            if ted == 0:
+            if ted <= 5: #0，1-5
                 # print(i,'~',j,ted)
                 temp.add(list(delCodeDict.keys())[j])
 
-
-        if len(temp) > 4:
-            # print('@@',len(temp))
+        if len(temp) > 3:
             for i in temp:
                 x = i.replace('bug.py', 'fix.py')
-                # print(i)
-                print(i, '\t', str(list(delCodeDict[i])[0]).strip().splitlines()[0], '\t',
-                      str(list(addCodeDict[x])[0]).strip().splitlines()[0])
+                s = str(list(delCodeDict[i])[0]).strip().splitlines()[0]
+                    # + '    ' + \
+                    # str(list(addCodeDict[x])[0]).strip().splitlines()[0]
+                # s = str(i)
+                resultList.add(s)
                 # print(str(list(addCodeDict[x])[0]).strip())
                 # print(str(list(delCodeDict[i])[0]).strip(),'\n+++++++\n',list(addCodeDict[x])[0].strip())
 
+    pprint(len(resultList))
+    # for i in resultList:
+    #     print(i)
+
 if __name__ == '__main__':
-    fileList = getFileList('../dataset/')
+    fileList = getFileList('../dataset') # your data set path
     fileList.sort()
 
     getLocalVar(fileList)
-    compare(delCodeDict)
+    # compare(delCodeDict)
+
+
+
+
+
+
+
+
+
+
