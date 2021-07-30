@@ -2,10 +2,8 @@
 Mining Python Fix Patterns via Analyzing Fine-Grained Source Code Changes
 
 # Structure of the Directories
- |--- pyff/diffFile/miningPattern.py :  mining fix patterns
+ |--- diffFile/miningPattern.py :  mining fix patterns
+  
+ |--- dataset.zip               :  dataset
  
- |--- pyff/dataset.zip               :  dataset
- 
- |--- pyff/testset                   :  test
-
 
