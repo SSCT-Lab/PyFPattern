@@ -1,0 +1,2 @@
+def cs_argument_spec():
+    return dict(api_key=dict(default=os.environ.get('CLOUDSTACK_KEY')), api_secret=dict(default=os.environ.get('CLOUDSTACK_SECRET'), no_log=True), api_url=dict(default=os.environ.get('CLOUDSTACK_ENDPOINT')), api_http_method=dict(choices=['get', 'post'], default=os.environ.get('CLOUDSTACK_METHOD')), api_timeout=dict(type='int', default=os.environ.get('CLOUDSTACK_TIMEOUT')), api_region=dict(default=(os.environ.get('CLOUDSTACK_REGION') or 'cloudstack')))

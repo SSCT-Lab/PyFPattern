@@ -1,0 +1,12 @@
+def __init__(self, module):
+    self.module = module
+    self.file_args = module.load_file_common_arguments(module.params)
+    self.clean = module.params['clean']
+    self.current_path = module.params['current_path']
+    self.keep_releases = module.params['keep_releases']
+    self.path = module.params['path']
+    self.release = module.params['release']
+    self.releases_path = module.params['releases_path']
+    self.shared_path = module.params['shared_path']
+    self.state = module.params['state']
+    self.unfinished_filename = module.params['unfinished_filename']

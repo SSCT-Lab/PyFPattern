@@ -1,0 +1,4 @@
+@pytest.fixture(params=[1, np.array(1, dtype=np.int64)])
+def one(request):
+    "\n    Several variants of integer value 1. The zero-dim integer array\n    behaves like an integer.\n\n    This fixture can be used to check that datetimelike indexes handle\n    addition and subtraction of integers and zero-dimensional arrays\n    of integers.\n\n    Examples\n    --------\n    >>> dti = pd.date_range('2016-01-01', periods=2, freq='H')\n    >>> dti\n    DatetimeIndex(['2016-01-01 00:00:00', '2016-01-01 01:00:00'],\n    dtype='datetime64[ns]', freq='H')\n    >>> dti + one\n    DatetimeIndex(['2016-01-01 01:00:00', '2016-01-01 02:00:00'],\n    dtype='datetime64[ns]', freq='H')\n    "
+    return request.param

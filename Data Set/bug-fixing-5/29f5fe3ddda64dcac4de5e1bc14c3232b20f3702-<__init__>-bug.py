@@ -1,0 +1,10 @@
+def __init__(self, module):
+    self.module = module
+    self.host_system = None
+    self.migrate_switch_name = self.module.params['migrate_switch_name']
+    self.migrate_portgroup_name = self.module.params['migrate_portgroup_name']
+    self.device = self.module.params['device']
+    self.esxi_hostname = self.module.params['esxi_hostname']
+    self.current_portgroup_name = self.module.params['current_portgroup_name']
+    self.current_switch_name = self.module.params['current_switch_name']
+    self.content = connect_to_api(module)

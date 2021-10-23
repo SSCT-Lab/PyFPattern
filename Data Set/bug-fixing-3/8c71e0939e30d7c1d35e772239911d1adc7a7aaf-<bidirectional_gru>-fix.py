@@ -1,0 +1,12 @@
+@wrap_name_default('bidirectional_gru')
+def bidirectional_gru(input, size, name=None, return_seq=False, fwd_mixed_param_attr=None, fwd_mixed_bias_attr=None, fwd_gru_param_attr=None, fwd_gru_bias_attr=None, fwd_act=None, fwd_gate_act=None, fwd_mixed_layer_attr=None, fwd_gru_cell_attr=None, bwd_mixed_param_attr=None, bwd_mixed_bias_attr=None, bwd_gru_param_attr=None, bwd_gru_bias_attr=None, bwd_act=None, bwd_gate_act=None, bwd_mixed_layer_attr=None, bwd_gru_cell_attr=None, last_seq_attr=None, first_seq_attr=None, concat_attr=None, concat_act=None):
+    '\n    A bidirectional_gru is a recurrent unit that iterates over the input\n    sequence both in forward and backward orders, and then concatenate two\n    outputs to form a final output. However, concatenation of two outputs\n    is not the only way to form the final output, you can also, for example,\n    just add them together.\n\n    The example usage is:\n\n    ..  code-block:: python\n\n        bi_gru = bidirectional_gru(input=[input1], size=512)\n\n    :param name: bidirectional gru layer name.\n    :type name: basestring\n    :param input: input layer.\n    :type input: LayerOutput\n    :param size: gru layer size.\n    :type size: int\n    :param return_seq: If set False, the last time step of output are\n                       concatenated and returned.\n                       If set True, the entire output sequences in forward \n                       and backward directions are concatenated and returned.\n    :type return_seq: bool\n    :return: LayerOutput object.\n    :rtype: LayerOutput\n    '
+    args = locals()
+    fw = simple_gru2(name=('%s_fw' % name), input=input, size=size, **dict(((k[len('fwd_'):], v) for (k, v) in args.iteritems() if k.startswith('fwd_'))))
+    bw = simple_gru2(name=('%s_bw' % name), input=input, size=size, reverse=True, **dict(((k[len('bwd_'):], v) for (k, v) in args.iteritems() if k.startswith('bwd_'))))
+    if return_seq:
+        return concat_layer(name=name, input=[fw, bw], layer_attr=concat_attr, act=concat_act)
+    else:
+        fw_seq = last_seq(name=('%s_fw_last' % name), input=fw, layer_attr=last_seq_attr)
+        bw_seq = first_seq(name=('%s_bw_last' % name), input=bw, layer_attr=first_seq_attr)
+        return concat_layer(name=name, input=[fw_seq, bw_seq], layer_attr=concat_attr, act=concat_act)

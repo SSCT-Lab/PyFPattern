@@ -1,0 +1,2 @@
+def build_entity(self):
+    return otypes.StorageConnection(address=self.param('address'), path=self.param('path'), nfs_version=self.param('nfs_version'), nfs_timeo=self.param('nfs_timeout'), nfs_retrans=self.param('nfs_retrans'), mount_options=self.param('mount_options'), password=self.param('password'), username=self.param('username'), port=self.param('port'), target=self.param('target'), type=(otypes.StorageType(self.param('type')) if (self.param('type') is not None) else None), vfs_type=self.param('vfs_type'))

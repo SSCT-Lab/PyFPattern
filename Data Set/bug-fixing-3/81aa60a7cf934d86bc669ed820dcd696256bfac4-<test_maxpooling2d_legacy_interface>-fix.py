@@ -1,0 +1,17 @@
+@keras_test
+def test_maxpooling2d_legacy_interface():
+    old_layer = keras.layers.MaxPooling2D(pool_size=(2, 2), border_mode='valid', name='maxpool2d')
+    new_layer = keras.layers.MaxPool2D(pool_size=2, padding='valid', name='maxpool2d')
+    assert (json.dumps(old_layer.get_config()) == json.dumps(new_layer.get_config()))
+    old_layer = keras.layers.MaxPooling2D((2, 2), 2, 'valid', name='maxpool2d')
+    new_layer = keras.layers.MaxPool2D(pool_size=2, strides=2, padding='valid', name='maxpool2d')
+    assert (json.dumps(old_layer.get_config()) == json.dumps(new_layer.get_config()))
+    old_layer = keras.layers.MaxPooling2D((2, 2), padding='valid', dim_ordering='tf', name='maxpool2d')
+    new_layer = keras.layers.MaxPool2D(pool_size=2, padding='valid', data_format='channels_last', name='maxpool2d')
+    assert (json.dumps(old_layer.get_config()) == json.dumps(new_layer.get_config()))
+    old_layer = keras.layers.MaxPooling2D((2, 2), padding='valid', dim_ordering='th', name='maxpool2d')
+    new_layer = keras.layers.MaxPool2D(pool_size=2, padding='valid', data_format='channels_first', name='maxpool2d')
+    assert (json.dumps(old_layer.get_config()) == json.dumps(new_layer.get_config()))
+    old_layer = keras.layers.MaxPooling2D((2, 2), padding='valid', dim_ordering='default', name='maxpool2d')
+    new_layer = keras.layers.MaxPool2D(pool_size=2, padding='valid', name='maxpool2d')
+    assert (json.dumps(old_layer.get_config()) == json.dumps(new_layer.get_config()))

@@ -1,0 +1,11 @@
+def plot_ellipse(splot, mean, cov, color):
+    (v, w) = linalg.eigh(cov)
+    u = (w[0] / linalg.norm(w[0]))
+    angle = np.arctan((u[1] / u[0]))
+    angle = ((180 * angle) / np.pi)
+    ell = mpl.patches.Ellipse(mean, (2 * (v[0] ** 0.5)), (2 * (v[1] ** 0.5)), (180 + angle), color=color)
+    ell.set_clip_box(splot.bbox)
+    ell.set_alpha(0.5)
+    splot.add_artist(ell)
+    splot.set_xticks(())
+    splot.set_yticks(())

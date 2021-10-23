@@ -1,0 +1,7 @@
+
+
+def range_input_producer(limit, num_epochs=None, shuffle=True, seed=None, capacity=32, shared_name=None, name=None):
+    "Produces the integers from 0 to limit-1 in a queue.\n\n  Note: if `num_epochs` is not `None`, this function creates local counter\n  `epochs`. Use `local_variables_initializer()` to initialize local variables.\n\n  Args:\n    limit: An int32 scalar tensor.\n    num_epochs: An integer (optional). If specified, `range_input_producer`\n      produces each integer `num_epochs` times before generating an\n      OutOfRange error. If not specified, `range_input_producer` can cycle\n      through the integers an unlimited number of times.\n    shuffle: Boolean. If true, the integers are randomly shuffled within each\n      epoch.\n    seed: An integer (optional). Seed used if shuffle == True.\n    capacity: An integer. Sets the queue capacity.\n    shared_name: (optional). If set, this queue will be shared under the given\n      name across multiple sessions.\n    name: A name for the operations (optional).\n\n  Returns:\n    A Queue with the output integers.  A `QueueRunner` for the Queue\n    is added to the current `Graph`'s `QUEUE_RUNNER` collection.\n  "
+    with ops.name_scope(name, 'input_producer', [limit]) as name:
+        range_tensor = math_ops.range(limit)
+        return input_producer(range_tensor, [], num_epochs, shuffle, seed, capacity, shared_name, name, ('fraction_of_%d_full' % capacity))

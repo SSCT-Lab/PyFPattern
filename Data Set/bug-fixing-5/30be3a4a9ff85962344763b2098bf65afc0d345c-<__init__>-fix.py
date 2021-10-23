@@ -1,0 +1,37 @@
+def __init__(self, argument_spec):
+    self.spec = argument_spec
+    self.module = None
+    self.__init_module__()
+    self.agent_ip = self.module.params['agent_ip']
+    self.agent_version = None
+    self.source_ip = self.module.params['source_ip']
+    self.source_version = None
+    self.export_route = self.module.params['export_route']
+    self.rate_limit = self.module.params['rate_limit']
+    self.rate_limit_slot = self.module.params['rate_limit_slot']
+    self.forward_enp_slot = self.module.params['forward_enp_slot']
+    self.collector_id = self.module.params['collector_id']
+    self.collector_ip = self.module.params['collector_ip']
+    self.collector_version = None
+    self.collector_ip_vpn = self.module.params['collector_ip_vpn']
+    self.collector_datagram_size = self.module.params['collector_datagram_size']
+    self.collector_udp_port = self.module.params['collector_udp_port']
+    self.collector_meth = self.module.params['collector_meth']
+    self.collector_description = self.module.params['collector_description']
+    self.sflow_interface = self.module.params['sflow_interface']
+    self.sample_collector = (self.module.params['sample_collector'] or list())
+    self.sample_rate = self.module.params['sample_rate']
+    self.sample_length = self.module.params['sample_length']
+    self.sample_direction = self.module.params['sample_direction']
+    self.counter_collector = (self.module.params['counter_collector'] or list())
+    self.counter_interval = self.module.params['counter_interval']
+    self.state = self.module.params['state']
+    self.config = ''
+    self.sflow_dict = dict()
+    self.changed = False
+    self.updates_cmd = list()
+    self.commands = list()
+    self.results = dict()
+    self.proposed = dict()
+    self.existing = dict()
+    self.end_state = dict()

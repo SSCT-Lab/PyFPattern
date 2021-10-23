@@ -1,0 +1,23 @@
+@tf_export(v1=['sparse.concat', 'sparse_concat'])
+@deprecation.deprecated_endpoints('sparse_concat')
+@deprecation.deprecated_args(None, 'concat_dim is deprecated, use axis instead', 'concat_dim')
+def sparse_concat(axis, sp_inputs, name=None, expand_nonconcat_dim=False, concat_dim=None):
+    'Concatenates a list of `SparseTensor` along the specified dimension.\n\n  Concatenation is with respect to the dense versions of each sparse input.\n  It is assumed that each inputs is a `SparseTensor` whose elements are ordered\n  along increasing dimension number.\n\n  If expand_nonconcat_dim is False, all inputs\' shapes must match, except for\n  the concat dimension. If expand_nonconcat_dim is True, then inputs\' shapes are\n  allowed to vary among all inputs.\n\n  The `indices`, `values`, and `shapes` lists must have the same length.\n\n  If expand_nonconcat_dim is False, then the output shape is identical to the\n  inputs\', except along the concat dimension, where it is the sum of the inputs\'\n  sizes along that dimension.\n\n  If expand_nonconcat_dim is True, then the output shape along the non-concat\n  dimensions will be expand to be the largest among all inputs, and it is the\n  sum of the inputs sizes along the concat dimension.\n\n  The output elements will be resorted to preserve the sort order along\n  increasing dimension number.\n\n  This op runs in `O(M log M)` time, where `M` is the total number of non-empty\n  values across all inputs. This is due to the need for an internal sort in\n  order to concatenate efficiently across an arbitrary dimension.\n\n  For example, if `axis = 1` and the inputs are\n\n      sp_inputs[0]: shape = [2, 3]\n      [0, 2]: "a"\n      [1, 0]: "b"\n      [1, 1]: "c"\n\n      sp_inputs[1]: shape = [2, 4]\n      [0, 1]: "d"\n      [0, 2]: "e"\n\n  then the output will be\n\n      shape = [2, 7]\n      [0, 2]: "a"\n      [0, 4]: "d"\n      [0, 5]: "e"\n      [1, 0]: "b"\n      [1, 1]: "c"\n\n  Graphically this is equivalent to doing\n\n      [    a] concat [  d e  ] = [    a   d e  ]\n      [b c  ]        [       ]   [b c          ]\n\n  Another example, if \'axis = 1\' and the inputs are\n\n      sp_inputs[0]: shape = [3, 3]\n      [0, 2]: "a"\n      [1, 0]: "b"\n      [2, 1]: "c"\n\n      sp_inputs[1]: shape = [2, 4]\n      [0, 1]: "d"\n      [0, 2]: "e"\n\n  if expand_nonconcat_dim = False, this will result in an error. But if\n  expand_nonconcat_dim = True, this will result in:\n\n      shape = [3, 7]\n      [0, 2]: "a"\n      [0, 4]: "d"\n      [0, 5]: "e"\n      [1, 0]: "b"\n      [2, 1]: "c"\n\n  Graphically this is equivalent to doing\n\n      [    a] concat [  d e  ] = [    a   d e  ]\n      [b    ]        [       ]   [b            ]\n      [  c  ]                    [  c          ]\n\n\n  Args:\n    axis: Dimension to concatenate along. Must be in range [-rank, rank),\n      where rank is the number of dimensions in each input `SparseTensor`.\n    sp_inputs: List of `SparseTensor` to concatenate.\n    name: A name prefix for the returned tensors (optional).\n    expand_nonconcat_dim: Whether to allow the expansion in the non-concat\n      dimensions. Defaulted to False.\n    concat_dim: The old (deprecated) name for axis.\n\n  Returns:\n    A `SparseTensor` with the concatenated output.\n\n  Raises:\n    TypeError: If `sp_inputs` is not a list of `SparseTensor`.\n  '
+    axis = deprecation.deprecated_argument_lookup('axis', axis, 'concat_dim', concat_dim)
+    sp_inputs = _convert_to_sparse_tensors(sp_inputs)
+    if (len(sp_inputs) == 1):
+        return sp_inputs[0]
+    inds = [sp_input.indices for sp_input in sp_inputs]
+    vals = [sp_input.values for sp_input in sp_inputs]
+    shapes = [sp_input.dense_shape for sp_input in sp_inputs]
+    if expand_nonconcat_dim:
+        max_shape = math_ops.reduce_max(array_ops.concat([array_ops.reshape(shape, [1, (- 1)]) for shape in shapes], 0), 0)
+        shapes = [array_ops.concat([max_shape[:axis], (shape[(- 1):] if (axis == (- 1)) else shape[axis:(axis + 1)]), ([] if (axis == (- 1)) else max_shape[(axis + 1):])], 0) for shape in shapes]
+    (output_ind, output_val, output_shape) = gen_sparse_ops.sparse_concat(inds, vals, shapes, axis, name=name)
+    shapes_value = [tensor_util.constant_value(shape) for shape in shapes]
+    if (shapes_value and all(((shape is not None) for shape in shapes_value))):
+        dim = sum((shape[axis] for shape in shapes_value))
+        output_shape = shapes_value[0]
+        output_shape[axis] = dim
+        output_shape = ops.convert_to_tensor(output_shape)
+    return sparse_tensor.SparseTensor(output_ind, output_val, output_shape)

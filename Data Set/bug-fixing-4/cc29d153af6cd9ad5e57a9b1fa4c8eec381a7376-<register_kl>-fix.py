@@ -1,0 +1,6 @@
+def register_kl(Dist1, Dist2):
+    'Decorator to register KL divergence function.\n\n    This decorator registers a function which computes Kullback-Leibler\n    divergence. This function will be called by :func:`~chainer.kl_divergence`\n    based on the argument types.\n\n    Args:\n        Dist1(`type`): type of a class inherit from\n            :class:`~chainer.Distribution` to calculate KL divergence.\n        Dist2(`type`): type of a class inherit from\n            :class:`~chainer.Distribution` to calculate KL divergence.\n\n    The decorated functoion takes an instance of ``Dist1`` and ``Dist2`` and\n    returns KL divergence value.\n\n    .. admonition:: Example\n\n        This is a simple example to register KL divergence. A function to\n        calculate a KL divergence value between an instance of ``Dist1`` and\n        an instance of ``Dist2`` is registered.\n\n        .. code-block:: python\n\n            from chainer import distributions\n            @distributions.register_kl(Dist1, Dist2)\n            def _kl_dist1_dist2(dist1, dist2):\n                return KL\n\n    '
+
+    def f(kl):
+        _KLDIVERGENCE[(Dist1, Dist2)] = kl
+    return f

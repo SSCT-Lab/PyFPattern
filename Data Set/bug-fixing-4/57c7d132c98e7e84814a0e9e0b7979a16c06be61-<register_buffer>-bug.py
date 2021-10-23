@@ -1,0 +1,5 @@
+def register_buffer(self, name, tensor):
+    "Adds a persistent buffer to the module.\n\n        This is typically used to register a buffer that should not to be\n        considered a model parameter. For example, BatchNorm's ``running_mean``\n        is not a parameter, but is part of the persistent state.\n\n        Buffers can be accessed as attributes using given names.\n\n        Args:\n            name (string): name of the buffer. The buffer can be accessed\n                from this module using the given name\n            tensor (Tensor): buffer to be registered.\n\n        Example:\n            >>> self.register_buffer('running_mean', torch.zeros(num_features))\n        "
+    if (hasattr(self, name) and (name not in self._buffers)):
+        raise KeyError("attribute '{}' already exists".format(name))
+    self._buffers[name] = tensor

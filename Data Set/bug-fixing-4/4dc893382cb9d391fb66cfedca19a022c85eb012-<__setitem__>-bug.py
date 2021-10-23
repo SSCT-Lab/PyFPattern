@@ -1,0 +1,9 @@
+def __setitem__(self, key, value):
+    'x.__setitem__(i, y) <=> x[i]=y\n\n        Set self[key] to value.\n\n        Parameters\n        ----------\n        key : int, slice or tuple\n            The indexing key.\n        value : scalar, NDArray or numpy.ndarray\n            The value to set.\n\n        Examples\n        --------\n        >>> x = mx.nd.zeros((2,3))\n        >>> x[:] = 1\n        >>> x.asnumpy()\n        array([[ 1.,  1.,  1.],\n               [ 1.,  1.,  1.]], dtype=float32)\n        >>> x.asnumpy()\n        array([[ 1.,  1.,  1.],\n               [ 1.,  1.,  1.]], dtype=float32)\n        >>> x[:,1:2] = 2\n        >>> x.asnumpy()\n        array([[ 1.,  2.,  1.],\n               [ 1.,  2.,  1.]], dtype=float32)\n        >>> x[1:2,1:] = 3\n        >>> x.asnumpy()\n        array([[ 1.,  2.,  1.],\n               [ 1.,  3.,  3.]], dtype=float32)\n        >>> x[1:,0:2] = mx.nd.zeros((1,2))\n        >>> x.asnumpy()\n        array([[ 1.,  2.,  1.],\n               [ 0.,  0.,  3.]], dtype=float32)\n        >>> x[1,2] = 4\n        >>> x.asnumpy()\n        array([[ 1.,  2.,  1.],\n               [ 0.,  0.,  4.]], dtype=float32)\n        >>> x[[0], [1, 2]] = 5\n        >>> x.asnumpy()\n        array([[ 1.,  5.,  5.],\n               [ 0.,  0.,  4.]], dtype=float32)\n        >>> x[::-1, 0:2:2] = [6]\n        >>> x.asnumpy()\n        array([[ 6.,  5.,  5.],\n               [ 6.,  0.,  4.]], dtype=float32)\n        '
+    indexing_dispatch_code = _get_indexing_dispatch_code(key)
+    if (indexing_dispatch_code == _NDARRAY_BASIC_INDEXING):
+        self._set_nd_basic_indexing(key, value)
+    elif (indexing_dispatch_code == _NDARRAY_ADVANCED_INDEXING):
+        self._set_nd_advanced_indexing(key, value)
+    else:
+        raise ValueError(('Indexing NDArray with index=%s and type=%s is not supported' % (str(key), str(type(key)))))

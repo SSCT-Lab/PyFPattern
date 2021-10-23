@@ -1,0 +1,13 @@
+def _do_it(self, action):
+    (master, slave) = pty.openpty()
+    p = subprocess.Popen(['ansible-connection'], stdin=slave, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdin = os.fdopen(master, 'wb', 0)
+    os.close(slave)
+    src = cPickle.dumps(self._play_context.serialize(), protocol=0)
+    stdin.write(src)
+    stdin.write(b'\n#END_INIT#\n')
+    stdin.write(to_bytes(action))
+    stdin.write(b'\n\n')
+    (stdout, stderr) = p.communicate()
+    stdin.close()
+    return (p.returncode, stdout, stderr)

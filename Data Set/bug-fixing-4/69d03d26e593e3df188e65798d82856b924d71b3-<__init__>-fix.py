@@ -1,0 +1,11 @@
+def __init__(self, module):
+    self.host_system = None
+    self.content = None
+    self.vss = None
+    self.module = module
+    self.switch = module.params['switch']
+    self.number_of_ports = module.params['number_of_ports']
+    self.nics = module.params['nics']
+    self.mtu = module.params['mtu']
+    self.state = module.params['state']
+    self.content = connect_to_api(self.module)

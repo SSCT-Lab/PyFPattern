@@ -1,0 +1,4 @@
+@tf_export(v1=['initializers.lecun_normal'])
+def lecun_normal(seed=None):
+    'LeCun normal initializer.\n\n  It draws samples from a truncated normal distribution centered on 0\n  with standard deviation (after truncation) given by\n  `stddev = sqrt(1 / fan_in)` where `fan_in` is the number of\n  input units in the weight tensor.\n\n  Arguments:\n      seed: A Python integer. Used to seed the random generator.\n\n  Returns:\n      An initializer.\n\n  References:\n      - Self-Normalizing Neural Networks,\n      [Klambauer et al., 2017](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks)  # pylint: disable=line-too-long\n      ([pdf](https://papers.nips.cc/paper/6698-self-normalizing-neural-networks.pdf))\n      - Efficient Backprop,\n      [Lecun et al., 1998](http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf)\n  '
+    return VarianceScaling(scale=1.0, mode='fan_in', distribution='truncated_normal', seed=seed)

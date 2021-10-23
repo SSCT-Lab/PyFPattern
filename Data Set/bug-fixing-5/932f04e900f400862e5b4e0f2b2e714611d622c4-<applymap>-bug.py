@@ -1,0 +1,4 @@
+def applymap(self, func, subset=None, **kwargs):
+    '\n        Apply a function elementwise, updating the HTML\n        representation with the result.\n\n        Parameters\n        ----------\n        func : function\n            ``func`` should take a scalar and return a scalar.\n        subset : IndexSlice\n            A valid indexer to limit ``data`` to *before* applying the\n            function. Consider using a pandas.IndexSlice.\n        **kwargs : dict\n            Pass along to ``func``.\n\n        Returns\n        -------\n        self : Styler\n\n        See Also\n        --------\n        Styler.where\n        '
+    self._todo.append(((lambda instance: getattr(instance, '_applymap')), (func, subset), kwargs))
+    return self

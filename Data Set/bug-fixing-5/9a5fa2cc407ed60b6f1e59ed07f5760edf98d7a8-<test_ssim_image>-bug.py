@@ -1,0 +1,15 @@
+def test_ssim_image():
+    N = 100
+    X = (np.random.rand(N, N) * 255).astype(np.uint8)
+    Y = (np.random.rand(N, N) * 255).astype(np.uint8)
+    S0 = ssim(X, X, win_size=3)
+    assert_equal(S0, 1)
+    S1 = ssim(X, Y, win_size=3)
+    assert (S1 < 0.3)
+    S2 = ssim(X, Y, win_size=11, gaussian_weights=True)
+    assert (S1 < 0.3)
+    (mssim0, S3) = ssim(X, Y, full=True)
+    assert_equal(S3.shape, X.shape)
+    mssim = ssim(X, Y)
+    assert_equal(mssim0, mssim)
+    assert_equal(ssim(X, X), 1.0)

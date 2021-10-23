@@ -1,0 +1,5 @@
+def send_message(self, queue_url, message_body, delay_seconds=0, message_attributes=None):
+    '\n        Send message to the queue\n\n        :param queue_url: queue url\n        :type queue_url: str\n        :param message_body: the contents of the message\n        :type message_body: str\n        :param delay_seconds: seconds to delay the message\n        :type delay_seconds: int\n        :param message_attributes: additional attributes for the message (default: None)\n            For details of the attributes parameter see :py:meth:`botocore.client.SQS.send_message`\n        :type message_attributes: dict\n\n        :return: dict with the information about the message sent\n            For details of the returned value see :py:meth:`botocore.client.SQS.send_message`\n        :rtype: dict\n        '
+    return self.get_conn().send_message(QueueUrl=queue_url, MessageBody=message_body, DelaySeconds=delay_seconds, MessageAttributes=(message_attributes or {
+        
+    }))

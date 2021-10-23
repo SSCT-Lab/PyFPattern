@@ -1,0 +1,18 @@
+def test_basic(self):
+    (x, i, v) = self._gen_sparse(3, 10, 100)
+    self.assertEqual(i, x._indices())
+    self.assertEqual(v, x._values())
+    (x, i, v) = self._gen_sparse(3, 10, [100, 100, 100])
+    self.assertEqual(i, x._indices())
+    self.assertEqual(v, x._values())
+    self.assertEqual(x.ndimension(), 3)
+    self.assertEqual(self.safeCoalesce(x)._nnz(), 10)
+    for i in range(3):
+        self.assertEqual(x.size(i), 100)
+    i = self.IndexTensor([[9, 0, 0, 0, 8, 1, 1, 1, 2, 7, 2, 2, 3, 4, 6, 9]])
+    v = self.ValueTensor([[(idx ** 2), idx] for idx in range(i.size(1))])
+    x = self.SparseTensor(i, v, torch.Size([10, 2]))
+    self.assertEqual(self.safeCoalesce(x)._nnz(), 9)
+    x = self.SparseTensor()
+    self.assertEqual(x._indices().numel(), 0)
+    self.assertEqual(x._values().numel(), 0)

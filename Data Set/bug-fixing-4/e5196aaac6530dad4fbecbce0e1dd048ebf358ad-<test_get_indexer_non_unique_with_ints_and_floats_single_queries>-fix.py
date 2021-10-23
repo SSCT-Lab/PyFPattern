@@ -1,0 +1,5 @@
+@pytest.mark.parametrize('query, expected', [((- 0.5), (Int64Index([], dtype='int64'), np.array([0]))), (0, (Int64Index([0], dtype='int64'), np.array([]))), (0.5, (Int64Index([0], dtype='int64'), np.array([]))), (1, (Int64Index([0, 1], dtype='int64'), np.array([]))), (1.5, (Int64Index([0, 1], dtype='int64'), np.array([]))), (2, (Int64Index([0, 1, 2], dtype='int64'), np.array([]))), (2.5, (Int64Index([1, 2], dtype='int64'), np.array([]))), (3, (Int64Index([2], dtype='int64'), np.array([]))), (3.5, (Int64Index([2], dtype='int64'), np.array([]))), (4, (Int64Index([], dtype='int64'), np.array([0]))), (4.5, (Int64Index([], dtype='int64'), np.array([0])))])
+def test_get_indexer_non_unique_with_ints_and_floats_single_queries(self, query, expected):
+    index = IntervalIndex.from_tuples([(0, 2.5), (1, 3), (2, 4)], closed='left')
+    result = index.get_indexer_non_unique([query])
+    tm.assert_numpy_array_equal(result, expected)

@@ -1,0 +1,18 @@
+def nanmean(a, axis=None, dtype=None, out=None, keepdims=np._NoValue):
+    '\n    Compute the arithmetic mean along the specified axis, ignoring NaNs.\n\n    Returns the average of the array elements.  The average is taken over\n    the flattened array by default, otherwise over the specified axis.\n    `float64` intermediate and return values are used for integer inputs.\n\n    For all-NaN slices, NaN is returned and a `RuntimeWarning` is raised.\n\n    .. versionadded:: 1.8.0\n\n    Parameters\n    ----------\n    a : array_like\n        Array containing numbers whose mean is desired. If `a` is not an\n        array, a conversion is attempted.\n    axis : {int, tuple of int, None}, optional\n        Axis or axes along which the means are computed. The default is to compute\n        the mean of the flattened array.\n    dtype : data-type, optional\n        Type to use in computing the mean.  For integer inputs, the default\n        is `float64`; for inexact inputs, it is the same as the input\n        dtype.\n    out : ndarray, optional\n        Alternate output array in which to place the result.  The default\n        is ``None``; if provided, it must have the same shape as the\n        expected output, but the type will be cast if necessary.  See\n        `doc.ufuncs` for details.\n    keepdims : bool, optional\n        If this is set to True, the axes which are reduced are left\n        in the result as dimensions with size one. With this option,\n        the result will broadcast correctly against the original `a`.\n\n        If the value is anything but the default, then\n        `keepdims` will be passed through to the `mean` or `sum` methods\n        of sub-classes of `ndarray`.  If the sub-classes methods\n        does not implement `keepdims` any exceptions will be raised.\n\n    Returns\n    -------\n    m : ndarray, see dtype parameter above\n        If `out=None`, returns a new array containing the mean values,\n        otherwise a reference to the output array is returned. Nan is\n        returned for slices that contain only NaNs.\n\n    See Also\n    --------\n    average : Weighted average\n    mean : Arithmetic mean taken while not ignoring NaNs\n    var, nanvar\n\n    Notes\n    -----\n    The arithmetic mean is the sum of the non-NaN elements along the axis\n    divided by the number of non-NaN elements.\n\n    Note that for floating-point input, the mean is computed using the same\n    precision the input has.  Depending on the input data, this can cause\n    the results to be inaccurate, especially for `float32`.  Specifying a\n    higher-precision accumulator using the `dtype` keyword can alleviate\n    this issue.\n\n    Examples\n    --------\n    >>> a = np.array([[1, np.nan], [3, 4]])\n    >>> np.nanmean(a)\n    2.6666666666666665\n    >>> np.nanmean(a, axis=0)\n    array([ 2.,  4.])\n    >>> np.nanmean(a, axis=1)\n    array([ 1.,  3.5])\n\n    '
+    (arr, mask) = _replace_nan(a, 0)
+    if (mask is None):
+        return np.mean(arr, axis=axis, dtype=dtype, out=out, keepdims=keepdims)
+    if (dtype is not None):
+        dtype = np.dtype(dtype)
+    if ((dtype is not None) and (not issubclass(dtype.type, np.inexact))):
+        raise TypeError('If a is inexact, then dtype must be inexact')
+    if ((out is not None) and (not issubclass(out.dtype.type, np.inexact))):
+        raise TypeError('If a is inexact, then out must be inexact')
+    cnt = np.sum((~ mask), axis=axis, dtype=np.intp, keepdims=keepdims)
+    tot = np.sum(arr, axis=axis, dtype=dtype, out=out, keepdims=keepdims)
+    avg = _divide_by_count(tot, cnt, out=out)
+    isbad = (cnt == 0)
+    if isbad.any():
+        warnings.warn('Mean of empty slice', RuntimeWarning, stacklevel=2)
+    return avg

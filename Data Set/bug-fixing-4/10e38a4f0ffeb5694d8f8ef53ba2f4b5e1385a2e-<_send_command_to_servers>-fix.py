@@ -1,0 +1,3 @@
+def _send_command_to_servers(self, head, body):
+    'Sends a command to all server nodes.\n\n        Sending command to a server node will cause that server node to invoke\n        ``KVStoreServer.controller`` to execute the command.\n\n        This function returns after the command has been executed on all server\n        nodes.\n\n        Parameters\n        ----------\n        head : int\n            the head of the command.\n        body : str\n            the body of the command.\n        '
+    check_call(_LIB.MXKVStoreSendCommmandToServers(self.handle, mx_uint(head), c_str(body)))

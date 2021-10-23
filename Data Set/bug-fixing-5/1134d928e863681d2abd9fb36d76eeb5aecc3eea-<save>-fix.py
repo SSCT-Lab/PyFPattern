@@ -1,0 +1,5 @@
+def save(self, fname):
+    'Saves symbol to a file.\n\n        You can also use pickle to do the job if you only work on python.\n        The advantage of load/save is the file is language agnostic.\n        This means the file saved using save can be loaded by other language binding of mxnet.\n        You also get the benefit being able to directly load/save from cloud storage(S3, HDFS)\n\n        Parameters\n        ----------\n        fname : str\n            The name of the file\n            - s3://my-bucket/path/my-s3-symbol\n            - hdfs://my-bucket/path/my-hdfs-symbol\n            - /path-to/my-local-symbol\n\n        See Also\n        --------\n        symbol.load : Used to load symbol from file.\n        '
+    if (not isinstance(fname, string_types)):
+        raise TypeError('fname need to be string')
+    check_call(_LIB.MXSymbolSaveToFile(self.handle, c_str(fname)))

@@ -1,0 +1,12 @@
+@wrap_name_default()
+@layer_support()
+def maxout_layer(input, groups, num_channels=None, name=None, layer_attr=None):
+    "\n    A layer to do max out on convolutional layer output.\n      - Input: the output of a convolutional layer.\n      - Output: feature map size same as the input's, and its channel number is\n        (input channel) / groups.\n\n    So groups should be larger than 1, and the num of channels should be able\n    to be devided by groups.\n\n    Reference:\n        `Maxout Networks\n        http://www.jmlr.org/proceedings/papers/v28/goodfellow13.pdf`_\n        `Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks\n        https://arxiv.org/pdf/1312.6082v4.pdf`_\n\n    .. math::\n       y_{si+j} = \\max_k x_{gsi + sk + j}\n       g = groups\n       s = input.size / num_channels\n       0 \\le i < num_channels / groups\n       0 \\le j < s\n       0 \\le k < groups\n\n    The simple usage is:\n\n    .. code-block:: python\n\n       maxout = maxout_layer(input,\n                             num_channels=128,\n                             groups=4)\n\n    :param input: The input of this layer.\n    :type input: LayerOutput\n    :param num_channels: The number of input channels. If the parameter is not set or\n                         set to None, its actual value will be automatically set to\n                         the channels number of the input.\n    :type num_channels: int\n    :param groups: The group number of input layer.\n    :type groups: int\n    :param name: The name of this layer. It is optional.\n    :type name: basestring\n    :param layer_attr: The extra layer attribute. See ExtraLayerAttribute for\n                       details.\n    :type layer_attr: ExtraLayerAttribute\n    :return: LayerOutput object.\n    :rtype: LayerOutput\n    "
+    assert isinstance(input.activation, LinearActivation)
+    assert (groups > 1)
+    if (num_channels is None):
+        assert (input.num_filters is not None)
+        num_channels = input.num_filters
+    assert ((num_channels % groups) == 0)
+    l = Layer(name=name, inputs=Input(input.name, maxout=MaxOut(channels=num_channels, groups=groups)), type=LayerType.MAXOUT, **ExtraLayerAttribute.to_kwargs(layer_attr))
+    return LayerOutput(name, LayerType.MAXOUT, parents=[input], size=l.config.size)

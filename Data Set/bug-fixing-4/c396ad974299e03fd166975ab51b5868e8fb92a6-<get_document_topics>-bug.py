@@ -1,0 +1,3 @@
+def get_document_topics(self, word_id, minimum_probability=None):
+    '\n        This method overwrites `LdaModel.get_document_topics` and simply raises an\n        exception. `get_document_topics` is not valid for the author-topic model,\n        use `get_author_topics` instead.\n\n        '
+    raise NotImplementedError('Method "get_document_topics" is not valid for the author-topic model. Use the "get_author_topics" method.')

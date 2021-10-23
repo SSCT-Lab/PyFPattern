@@ -1,0 +1,10 @@
+def match_groups(self, server_info):
+    server_zone = server_info['location']['zone_id']
+    server_tags = server_info['tags']
+    if (self._get_tags() is None):
+        return set(server_tags).union((server_zone,))
+    matching_tags = set(server_tags).intersection(self._get_tags())
+    if (not matching_tags):
+        return set()
+    else:
+        return matching_tags.union((server_zone,))

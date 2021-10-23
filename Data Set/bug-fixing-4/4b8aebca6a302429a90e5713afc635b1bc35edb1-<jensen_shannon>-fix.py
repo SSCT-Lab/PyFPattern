@@ -1,0 +1,5 @@
+def jensen_shannon(vec1, vec2, num_features=None):
+    'Calculate Jensen-Shannon distance between two probability distributions using `scipy.stats.entropy`.\n\n    Parameters\n    ----------\n    vec1 : {scipy.sparse, numpy.ndarray, list of (int, float)}\n        Distribution vector.\n    vec2 : {scipy.sparse, numpy.ndarray, list of (int, float)}\n        Distribution vector.\n    num_features : int, optional\n        Number of features in vector.\n\n    Returns\n    -------\n    float\n        Jensen-Shannon distance between `vec1` and `vec2`.\n\n    Notes\n    -----\n    This is symmetric and finite "version" of :func:`gensim.matutils.kullback_leibler`.\n\n    '
+    (vec1, vec2) = convert_vec(vec1, vec2, num_features=num_features)
+    avg_vec = (0.5 * (vec1 + vec2))
+    return (0.5 * (entropy(vec1, avg_vec) + entropy(vec2, avg_vec)))

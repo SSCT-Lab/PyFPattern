@@ -1,0 +1,16 @@
+def test_var_std(self, datetime_series, string_series):
+    alt = (lambda x: np.std(x, ddof=1))
+    self._check_stat_op('std', alt, string_series)
+    alt = (lambda x: np.var(x, ddof=1))
+    self._check_stat_op('var', alt, string_series)
+    result = datetime_series.std(ddof=4)
+    expected = np.std(datetime_series.values, ddof=4)
+    assert_almost_equal(result, expected)
+    result = datetime_series.var(ddof=4)
+    expected = np.var(datetime_series.values, ddof=4)
+    assert_almost_equal(result, expected)
+    s = datetime_series.iloc[[0]]
+    result = s.var(ddof=1)
+    assert isna(result)
+    result = s.std(ddof=1)
+    assert isna(result)

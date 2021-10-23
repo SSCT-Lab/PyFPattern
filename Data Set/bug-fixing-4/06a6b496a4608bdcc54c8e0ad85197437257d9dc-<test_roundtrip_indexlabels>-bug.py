@@ -1,0 +1,31 @@
+def test_roundtrip_indexlabels(self, merge_cells, engine, ext, frame):
+    frame = frame.copy()
+    frame['A'][:5] = np.nan
+    frame.to_excel(self.path, 'test1')
+    frame.to_excel(self.path, 'test1', columns=['A', 'B'])
+    frame.to_excel(self.path, 'test1', header=False)
+    frame.to_excel(self.path, 'test1', index=False)
+    df = (DataFrame(np.random.randn(10, 2)) >= 0)
+    df.to_excel(self.path, 'test1', index_label=['test'], merge_cells=merge_cells)
+    reader = ExcelFile(self.path)
+    recons = pd.read_excel(reader, 'test1', index_col=0).astype(np.int64)
+    df.index.names = ['test']
+    assert (df.index.names == recons.index.names)
+    df = (DataFrame(np.random.randn(10, 2)) >= 0)
+    df.to_excel(self.path, 'test1', index_label=['test', 'dummy', 'dummy2'], merge_cells=merge_cells)
+    reader = ExcelFile(self.path)
+    recons = pd.read_excel(reader, 'test1', index_col=0).astype(np.int64)
+    df.index.names = ['test']
+    assert (df.index.names == recons.index.names)
+    df = (DataFrame(np.random.randn(10, 2)) >= 0)
+    df.to_excel(self.path, 'test1', index_label='test', merge_cells=merge_cells)
+    reader = ExcelFile(self.path)
+    recons = pd.read_excel(reader, 'test1', index_col=0).astype(np.int64)
+    df.index.names = ['test']
+    tm.assert_frame_equal(df, recons.astype(bool))
+    frame.to_excel(self.path, 'test1', columns=['A', 'B', 'C', 'D'], index=False, merge_cells=merge_cells)
+    df = frame.copy()
+    df = df.set_index(['A', 'B'])
+    reader = ExcelFile(self.path)
+    recons = pd.read_excel(reader, 'test1', index_col=[0, 1])
+    tm.assert_frame_equal(df, recons, check_less_precise=True)

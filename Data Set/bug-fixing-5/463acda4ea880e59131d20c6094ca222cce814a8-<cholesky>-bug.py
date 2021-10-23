@@ -1,0 +1,12 @@
+@array_function_dispatch(_unary_dispatcher)
+def cholesky(a):
+    '\n    Cholesky decomposition.\n\n    Return the Cholesky decomposition, `L * L.H`, of the square matrix `a`,\n    where `L` is lower-triangular and .H is the conjugate transpose operator\n    (which is the ordinary transpose if `a` is real-valued).  `a` must be\n    Hermitian (symmetric if real-valued) and positive-definite.  Only `L` is\n    actually returned.\n\n    Parameters\n    ----------\n    a : (..., M, M) array_like\n        Hermitian (symmetric if all elements are real), positive-definite\n        input matrix.\n\n    Returns\n    -------\n    L : (..., M, M) array_like\n        Upper or lower-triangular Cholesky factor of `a`.  Returns a\n        matrix object if `a` is a matrix object.\n\n    Raises\n    ------\n    LinAlgError\n       If the decomposition fails, for example, if `a` is not\n       positive-definite.\n\n    Notes\n    -----\n\n    .. versionadded:: 1.8.0\n\n    Broadcasting rules apply, see the `numpy.linalg` documentation for\n    details.\n\n    The Cholesky decomposition is often used as a fast way of solving\n\n    .. math:: A \\mathbf{x} = \\mathbf{b}\n\n    (when `A` is both Hermitian/symmetric and positive-definite).\n\n    First, we solve for :math:`\\mathbf{y}` in\n\n    .. math:: L \\mathbf{y} = \\mathbf{b},\n\n    and then for :math:`\\mathbf{x}` in\n\n    .. math:: L.H \\mathbf{x} = \\mathbf{y}.\n\n    Examples\n    --------\n    >>> A = np.array([[1,-2j],[2j,5]])\n    >>> A\n    array([[ 1.+0.j, -0.-2.j],\n           [ 0.+2.j,  5.+0.j]])\n    >>> L = np.linalg.cholesky(A)\n    >>> L\n    array([[1.+0.j, 0.+0.j],\n           [0.+2.j, 1.+0.j]])\n    >>> np.dot(L, L.T.conj()) # verify that L * L.H = A\n    array([[1.+0.j, 0.-2.j],\n           [0.+2.j, 5.+0.j]])\n    >>> A = [[1,-2j],[2j,5]] # what happens if A is only array_like?\n    >>> np.linalg.cholesky(A) # an ndarray object is returned\n    array([[1.+0.j, 0.+0.j],\n           [0.+2.j, 1.+0.j]])\n    >>> # But a matrix object is returned if A is a matrix object\n    >>> np.linalg.cholesky(np.matrix(A))\n    matrix([[ 1.+0.j,  0.+0.j],\n            [ 0.+2.j,  1.+0.j]])\n\n    '
+    extobj = get_linalg_error_extobj(_raise_linalgerror_nonposdef)
+    gufunc = _umath_linalg.cholesky_lo
+    (a, wrap) = _makearray(a)
+    _assertRankAtLeast2(a)
+    _assertNdSquareness(a)
+    (t, result_t) = _commonType(a)
+    signature = ('D->D' if isComplexType(t) else 'd->d')
+    r = gufunc(a, signature=signature, extobj=extobj)
+    return wrap(r.astype(result_t, copy=False))

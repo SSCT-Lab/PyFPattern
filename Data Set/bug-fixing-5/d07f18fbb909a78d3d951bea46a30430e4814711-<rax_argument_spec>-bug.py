@@ -1,0 +1,3 @@
+def rax_argument_spec():
+    'Return standard base dictionary used for the argument_spec\n    argument in AnsibleModule\n\n    '
+    return dict(api_key=dict(type='str', aliases=['password'], no_log=True), auth_endpoint=dict(type='str'), credentials=dict(type='str', aliases=['creds_file']), env=dict(type='str'), identity_type=dict(type='str', default='rackspace'), region=dict(type='str'), tenant_id=dict(type='str'), tenant_name=dict(type='str'), username=dict(type='str'), verify_ssl=dict(choices=BOOLEANS, type='bool'))

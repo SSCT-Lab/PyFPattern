@@ -1,0 +1,9 @@
+@mock.patch('django.db.migrations.questioner.MigrationQuestioner.ask_not_null_alteration', return_value=models.NOT_PROVIDED)
+def test_alter_field_to_not_null_without_default(self, mocked_ask_method):
+    '\n        #23609 - Tests autodetection of nullable to non-nullable alterations.\n        '
+    changes = self.get_changes([self.author_name_null], [self.author_name])
+    self.assertEqual(mocked_ask_method.call_count, 1)
+    self.assertNumberMigrations(changes, 'testapp', 1)
+    self.assertOperationTypes(changes, 'testapp', 0, ['AlterField'])
+    self.assertOperationAttributes(changes, 'testapp', 0, 0, name='name', preserve_default=True)
+    self.assertOperationFieldAttributes(changes, 'testapp', 0, 0, default=models.NOT_PROVIDED)

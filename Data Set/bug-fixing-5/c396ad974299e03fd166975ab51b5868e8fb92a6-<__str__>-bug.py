@@ -1,0 +1,2 @@
+def __str__(self):
+    return ('AuthorTopicModel(num_terms=%s, num_topics=%s, num_authors=%s, decay=%s, chunksize=%s)' % (self.num_terms, self.num_topics, self.num_authors, self.decay, self.chunksize))

@@ -1,0 +1,11 @@
+def test_score():
+    km1 = KMeans(n_clusters=n_clusters, max_iter=1, random_state=42, n_init=1)
+    s1 = km1.fit(X).score(X)
+    km2 = KMeans(n_clusters=n_clusters, max_iter=10, random_state=42, n_init=1)
+    s2 = km2.fit(X).score(X)
+    assert_greater(s2, s1)
+    km1 = KMeans(n_clusters=n_clusters, max_iter=1, random_state=42, n_init=1, algorithm='elkan')
+    s1 = km1.fit(X).score(X)
+    km2 = KMeans(n_clusters=n_clusters, max_iter=10, random_state=42, n_init=1, algorithm='elkan')
+    s2 = km2.fit(X).score(X)
+    assert_greater(s2, s1)

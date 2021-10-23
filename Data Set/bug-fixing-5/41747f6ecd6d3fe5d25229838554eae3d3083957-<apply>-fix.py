@@ -1,0 +1,5 @@
+def apply(self, X, check_input=True):
+    "Return the index of the leaf that each sample is predicted as.\n\n        .. versionadded:: 0.17\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            The input samples. Internally, it will be converted to\n            ``dtype=np.float32`` and if a sparse matrix is provided\n            to a sparse ``csr_matrix``.\n\n        check_input : bool, default=True\n            Allow to bypass several input checking.\n            Don't use this parameter unless you know what you do.\n\n        Returns\n        -------\n        X_leaves : array-like of shape (n_samples,)\n            For each datapoint x in X, return the index of the leaf x\n            ends up in. Leaves are numbered within\n            ``[0; self.tree_.node_count)``, possibly with gaps in the\n            numbering.\n        "
+    check_is_fitted(self)
+    X = self._validate_X_predict(X, check_input)
+    return self.tree_.apply(X)

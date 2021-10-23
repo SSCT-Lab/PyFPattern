@@ -1,0 +1,6 @@
+def unravel_index(indices, shape, order='C'):
+    '\n    Converts a flat index or array of flat indices into a tuple of coordinate arrays.\n\n    Parameters:\n    -------------\n    indices : array_like\n            An integer array whose elements are indices into the flattened version of an array of dimensions shape.\n            Before version 1.6.0, this function accepted just one index value.\n    shape : tuple of ints\n            The shape of the array to use for unraveling indices.\n\n    Returns:\n    -------------\n    unraveled_coords : ndarray\n            Each row in the ndarray has the same shape as the indices array.\n            Each column in the ndarray represents the unravelled index\n\n    Examples:\n    -------------\n    >>> np.unravel_index([22, 41, 37], (7,6))\n    ([3. 6. 6.]\n      [4. 5. 1.])\n    >>> np.unravel_index(1621, (6,7,8,9))\n    (3, 1, 4, 1)\n    '
+    if (order == 'C'):
+        return _npi.unravel_index_fallback(indices, shape=shape)
+    else:
+        raise NotImplementedError('Don not support column-major (Fortran-style) order at this moment')

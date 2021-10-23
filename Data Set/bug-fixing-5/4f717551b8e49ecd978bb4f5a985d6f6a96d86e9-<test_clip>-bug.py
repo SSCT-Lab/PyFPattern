@@ -1,0 +1,10 @@
+def test_clip(self):
+    val = self.ts.median()
+    assert (self.ts.clip_lower(val).min() == val)
+    assert (self.ts.clip_upper(val).max() == val)
+    assert (self.ts.clip(lower=val).min() == val)
+    assert (self.ts.clip(upper=val).max() == val)
+    result = self.ts.clip((- 0.5), 0.5)
+    expected = np.clip(self.ts, (- 0.5), 0.5)
+    assert_series_equal(result, expected)
+    assert isinstance(expected, Series)

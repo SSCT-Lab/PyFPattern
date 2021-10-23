@@ -1,0 +1,12 @@
+def parameterize_pytest(names, values):
+    assert isinstance(names, str)
+    assert isinstance(values, (tuple, list))
+
+    def safe_zip(ns, vs):
+        if (not isinstance(vs, (tuple, list))):
+            vs = (vs,)
+        assert (len(ns) == len(vs))
+        return zip(ns, vs)
+    names = names.split(',')
+    params = [dict(safe_zip(names, value_list)) for value_list in values]
+    return parameterize(*params)

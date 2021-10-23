@@ -1,0 +1,5 @@
+@array_function_dispatch(_ppmt_dispatcher)
+def ppmt(rate, per, nper, pv, fv=0, when='end'):
+    "\n    Compute the payment against loan principal.\n\n    .. deprecated:: 1.18\n\n       `ppmt` is deprecated; see NEP 32::\n\n           https://numpy.org/neps/nep-0032-remove-financial-functions.html\n\n        Use the corresponding function in the numpy-financial library,\n        https://pypi.org/project/numpy-financial\n\n    Parameters\n    ----------\n    rate : array_like\n        Rate of interest (per period)\n    per : array_like, int\n        Amount paid against the loan changes.  The `per` is the period of\n        interest.\n    nper : array_like\n        Number of compounding periods\n    pv : array_like\n        Present value\n    fv : array_like, optional\n        Future value\n    when : {{'begin', 1}, {'end', 0}}, {string, int}\n        When payments are due ('begin' (1) or 'end' (0))\n\n    See Also\n    --------\n    pmt, pv, ipmt\n\n    "
+    total = pmt(rate, nper, pv, fv, when)
+    return (total - ipmt(rate, per, nper, pv, fv, when))

@@ -1,0 +1,28 @@
+def create_nic(self, device_type, device_label, device_infos):
+    nic = vim.vm.device.VirtualDeviceSpec()
+    if (device_type == 'pcnet32'):
+        nic.device = vim.vm.device.VirtualPCNet32()
+    elif (device_type == 'vmxnet2'):
+        nic.device = vim.vm.device.VirtualVmxnet2()
+    elif (device_type == 'vmxnet3'):
+        nic.device = vim.vm.device.VirtualVmxnet3()
+    elif (device_type == 'e1000'):
+        nic.device = vim.vm.device.VirtualE1000()
+    elif (device_type == 'e1000e'):
+        nic.device = vim.vm.device.VirtualE1000e()
+    elif (device_type == 'sriov'):
+        nic.device = vim.vm.device.VirtualSriovEthernetCard()
+    else:
+        self.module.fail_json(msg=("Invalid device_type '%s' for network %s" % (device_type, device_infos['name'])))
+    nic.device.wakeOnLanEnabled = True
+    nic.device.addressType = 'assigned'
+    nic.device.deviceInfo = vim.Description()
+    nic.device.deviceInfo.label = device_label
+    nic.device.deviceInfo.summary = device_infos['name']
+    nic.device.connectable = vim.vm.device.VirtualDevice.ConnectInfo()
+    nic.device.connectable.startConnected = True
+    nic.device.connectable.allowGuestControl = True
+    nic.device.connectable.connected = True
+    if ('mac' in device_infos):
+        nic.device.macAddress = device_infos['mac']
+    return nic

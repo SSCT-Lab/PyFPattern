@@ -1,0 +1,10 @@
+def add_param(self, name, shape=None, dtype=numpy.float32, initializer=None):
+    "Registers a parameter to the link.\n\n        .. deprecated:: v2.0.0\n\n           Assign a :class:`~chainer.Parameter` object directly to an\n           attribute within :meth:`an initialization scope <init_scope>`\n           instead. For example, the following code\n\n           .. code-block:: python\n\n               link.add_param('W', shape=(5, 3))\n\n           can be replaced by the following assignment.\n\n           .. code-block:: python\n\n               with self.init_scope():\n                   link.W = chainer.Parameter(None, (5, 3))\n\n           The latter one is easier for IDEs to keep track of the attribute's\n           type.\n\n        Args:\n            name (str): Name of the parameter. This name is also used as the\n                attribute name.\n            shape (int or tuple of ints): Shape of the parameter array. If it\n                is omitted, the parameter variable is left uninitialized.\n            dtype: Data type of the parameter array.\n            initializer: If it is not ``None``, the data is initialized with\n                the given initializer. If it is an array, the data is directly\n                initialized by it. If it is callable, it is used as a weight\n                initializer. Note that in these cases, ``dtype`` argument is\n                ignored.\n\n        "
+    warnings.warn('Parameter registeration via Link.__init__ and Link.add_param are deprecated.\nAssign a Parameter object directly to an attribute within a "with Link.init_scope():" block instead.\n', DeprecationWarning)
+    if (name in self.__dict__):
+        raise AttributeError(('cannot register a new parameter %s: attribute exists' % name))
+    if (initializer is None):
+        initializer = initializers.NaN(dtype)
+    param = variable.Parameter(initializer, shape)
+    with self.init_scope():
+        setattr(self, name, param)

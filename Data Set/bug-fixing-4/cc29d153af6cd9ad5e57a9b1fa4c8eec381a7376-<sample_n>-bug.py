@@ -1,0 +1,3 @@
+def sample_n(self, n):
+    'Samples n random points from the distribution.\n\n        This function returns sampled points whose shape is\n        `(n,) + batch_shape + event_shape`. When implementing sampling code in\n        a subclass, it is recommended to override this method.\n\n        Args:\n            n(`int`): Sampling size.\n\n        Returns:\n            ~chainer.Variable: sampled random points.\n        '
+    raise NotImplementedError

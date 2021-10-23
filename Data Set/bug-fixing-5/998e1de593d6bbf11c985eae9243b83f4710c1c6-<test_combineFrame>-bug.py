@@ -1,0 +1,35 @@
+def test_combineFrame(self):
+    frame_copy = self.frame.reindex(self.frame.index[::2])
+    del frame_copy['D']
+    frame_copy['C'][:5] = np.nan
+    added = (self.frame + frame_copy)
+    indexer = added['A'].dropna().index
+    exp = (self.frame['A'] * 2).copy()
+    tm.assert_series_equal(added['A'].dropna(), exp.loc[indexer])
+    exp.loc[(~ exp.index.isin(indexer))] = np.nan
+    tm.assert_series_equal(added['A'], exp.loc[added['A'].index])
+    assert np.isnan(added['C'].reindex(frame_copy.index)[:5]).all()
+    assert np.isnan(added['D']).all()
+    self_added = (self.frame + self.frame)
+    tm.assert_index_equal(self_added.index, self.frame.index)
+    added_rev = (frame_copy + self.frame)
+    assert np.isnan(added['D']).all()
+    assert np.isnan(added_rev['D']).all()
+    plus_empty = (self.frame + self.empty)
+    assert np.isnan(plus_empty.values).all()
+    empty_plus = (self.empty + self.frame)
+    assert np.isnan(empty_plus.values).all()
+    empty_empty = (self.empty + self.empty)
+    assert empty_empty.empty
+    reverse = self.frame.reindex(columns=self.frame.columns[::(- 1)])
+    assert_frame_equal((reverse + self.frame), (self.frame * 2))
+    added = (self.frame + self.mixed_float)
+    _check_mixed_float(added, dtype='float64')
+    added = (self.mixed_float + self.frame)
+    _check_mixed_float(added, dtype='float64')
+    added = (self.mixed_float + self.mixed_float2)
+    _check_mixed_float(added, dtype=dict(C=None))
+    added = (self.mixed_float2 + self.mixed_float)
+    _check_mixed_float(added, dtype=dict(C=None))
+    added = (self.frame + self.mixed_int)
+    _check_mixed_float(added, dtype='float64')

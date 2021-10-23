@@ -1,0 +1,11 @@
+def __init__(self, module):
+    self.module = module
+    self.datacenter_name = module.params['datacenter_name']
+    self.cluster_name = module.params['cluster_name']
+    self.esxi_hostname = module.params['esxi_hostname']
+    self.esxi_username = module.params['esxi_username']
+    self.esxi_password = module.params['esxi_password']
+    self.state = module.params['state']
+    self.cluster = None
+    self.host = None
+    self.content = connect_to_api(module)

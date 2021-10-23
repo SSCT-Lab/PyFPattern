@@ -1,0 +1,3 @@
+def score(self, X, y=None):
+    'Compute the total log probability under the model.\n\n        Parameters\n        ----------\n        X : array_like, shape (n_samples, n_features)\n            List of n_features-dimensional data points.  Each row\n            corresponds to a single data point.\n\n        Returns\n        -------\n        logprob : float\n            Total log-likelihood of the data in X.\n        '
+    return np.sum(self.score_samples(X))

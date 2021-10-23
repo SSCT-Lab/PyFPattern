@@ -1,0 +1,15 @@
+def test_circular_fk_dependency(self):
+    '\n        Tests that having a circular ForeignKey dependency automatically\n        resolves the situation into 2 migrations on one side and 1 on the other.\n        '
+    changes = self.get_changes([], [self.author_with_book, self.book, self.publisher_with_book])
+    self.assertNumberMigrations(changes, 'testapp', 1)
+    self.assertOperationTypes(changes, 'testapp', 0, ['CreateModel', 'CreateModel'])
+    self.assertOperationAttributes(changes, 'testapp', 0, 0, name='Author')
+    self.assertOperationAttributes(changes, 'testapp', 0, 1, name='Publisher')
+    self.assertMigrationDependencies(changes, 'testapp', 0, [('otherapp', 'auto_1')])
+    self.assertNumberMigrations(changes, 'otherapp', 2)
+    self.assertOperationTypes(changes, 'otherapp', 0, ['CreateModel'])
+    self.assertOperationTypes(changes, 'otherapp', 1, ['AddField'])
+    self.assertMigrationDependencies(changes, 'otherapp', 0, [])
+    self.assertMigrationDependencies(changes, 'otherapp', 1, [('otherapp', 'auto_1'), ('testapp', 'auto_1')])
+    self.assertTrue(changes['otherapp'][0].initial)
+    self.assertTrue(changes['otherapp'][1].initial)

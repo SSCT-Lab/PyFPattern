@@ -1,0 +1,7 @@
+@property
+def score_samples(self):
+    'Opposite of the Local Outlier Factor of X.\n\n        It is the opposite as as bigger is better, i.e. large values correspond\n        to inliers.\n\n        Only available for novelty detection (when novelty is set to True).\n        The argument X is supposed to contain *new data*: if X contains a\n        point from training, it considers the later in its own neighborhood.\n        Also, the samples in X are not considered in the neighborhood of any\n        point.\n        The score_samples on training data is available by considering the\n        the ``negative_outlier_factor_`` attribute.\n\n        Parameters\n        ----------\n        X : array-like, shape (n_samples, n_features)\n            The query sample or samples to compute the Local Outlier Factor\n            w.r.t. the training samples.\n\n        Returns\n        -------\n        opposite_lof_scores : array, shape (n_samples,)\n            The opposite of the Local Outlier Factor of each input samples.\n            The lower, the more abnormal.\n        '
+    if (not self.novelty):
+        msg = 'score_samples is not available when novelty=False. The scores of the training samples are always available through the negative_outlier_factor_ attribute. Use novelty=True if you want to use LOF for novelty detection and compute score_samples for new unseen data.'
+        raise AttributeError(msg)
+    return self._score_samples

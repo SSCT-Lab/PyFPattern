@@ -1,0 +1,5 @@
+def reset(self):
+    "Clears all information stored in this tape.\n\n    Equivalent to exiting and reentering the tape context manager with a new\n    tape. For example, the two following code blocks are equivalent:\n\n    ```\n    with tf.GradientTape() as t:\n      loss = loss_fn()\n    with tf.GradientTape() as t:\n      loss += other_loss_fn()\n    t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn\n\n\n    # The following is equivalent to the above\n    with tf.GradientTape() as t:\n      loss = loss_fn()\n      t.reset()\n      loss += other_loss_fn()\n    t.gradient(loss, ...)  # Only differentiates other_loss_fn, not loss_fn\n    ```\n\n    This is useful if you don't want to exit the context manager for the tape,\n    or can't because the desired reset point is inside a control flow construct:\n\n    ```\n    with tf.GradientTape() as t:\n      loss = ...\n      if loss > k:\n        t.reset()\n    ```\n    "
+    self._pop_tape()
+    self._tape = None
+    self._push_tape()

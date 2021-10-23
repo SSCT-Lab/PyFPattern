@@ -1,0 +1,9 @@
+def expand_dims(a, axis):
+    '\n    Expand the shape of an array.\n\n    Insert a new axis that will appear at the `axis` position in the expanded\n    array shape.\n\n    .. note:: Previous to NumPy 1.13.0, neither ``axis < -a.ndim - 1`` nor\n       ``axis > a.ndim`` raised errors or put the new axis where documented.\n       Those axis values are now deprecated and will raise an AxisError in the\n       future.\n\n    Parameters\n    ----------\n    a : array_like\n        Input array.\n    axis : int\n        Position in the expanded axes where the new axis is placed.\n\n    Returns\n    -------\n    res : ndarray\n        Output array. The number of dimensions is one greater than that of\n        the input array.\n\n    See Also\n    --------\n    squeeze : The inverse operation, removing singleton dimensions\n    reshape : Insert, remove, and combine dimensions, and resize existing ones\n    doc.indexing, atleast_1d, atleast_2d, atleast_3d\n\n    Examples\n    --------\n    >>> x = np.array([1,2])\n    >>> x.shape\n    (2,)\n\n    The following is equivalent to ``x[np.newaxis,:]`` or ``x[np.newaxis]``:\n\n    >>> y = np.expand_dims(x, axis=0)\n    >>> y\n    array([[1, 2]])\n    >>> y.shape\n    (1, 2)\n\n    >>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,np.newaxis]\n    >>> y\n    array([[1],\n           [2]])\n    >>> y.shape\n    (2, 1)\n\n    Note that some examples may use ``None`` instead of ``np.newaxis``.  These\n    are the same objects:\n\n    >>> np.newaxis is None\n    True\n\n    '
+    a = asarray(a)
+    shape = a.shape
+    if ((axis > a.ndim) or (axis < ((- a.ndim) - 1))):
+        warnings.warn('Both axis > a.ndim and axis < -a.ndim - 1 are deprecated and will raise an AxisError in the future.', DeprecationWarning, stacklevel=2)
+    if (axis < 0):
+        axis = ((axis + a.ndim) + 1)
+    return a.reshape(((shape[:axis] + (1,)) + shape[axis:]))

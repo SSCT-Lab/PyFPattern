@@ -1,0 +1,4 @@
+def decision_path(self, X, check_input=True):
+    "Return the decision path in the tree.\n\n        .. versionadded:: 0.18\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            The input samples. Internally, it will be converted to\n            ``dtype=np.float32`` and if a sparse matrix is provided\n            to a sparse ``csr_matrix``.\n\n        check_input : bool, default=True\n            Allow to bypass several input checking.\n            Don't use this parameter unless you know what you do.\n\n        Returns\n        -------\n        indicator : sparse matrix of shape (n_samples, n_nodes)\n            Return a node indicator CSR matrix where non zero elements\n            indicates that the samples goes through the nodes.\n        "
+    X = self._validate_X_predict(X, check_input)
+    return self.tree_.decision_path(X)

@@ -1,0 +1,61 @@
+def main():
+    'Main ansible module function\n    '
+    module = AnsibleModule(argument_spec=dict(server_url=dict(type='str', required=True, aliases=['url']), login_user=dict(type='str', required=True), login_password=dict(type='str', required=True, no_log=True), http_login_user=dict(type='str', required=False, default=None), http_login_password=dict(type='str', required=False, default=None, no_log=True), validate_certs=dict(type='bool', required=False, default=True), esc_period=dict(type='int', required=False, default=60), timeout=dict(type='int', default=10), name=dict(type='str', required=True), event_source=dict(type='str', required=True, choices=['trigger', 'discovery', 'auto_registration', 'internal']), state=dict(type='str', required=False, default='present', choices=['present', 'absent']), status=dict(type='str', required=False, default='enabled', choices=['enabled', 'disabled']), pause_in_maintenance=dict(type='bool', required=False, default=True), default_message=dict(type='str', required=False, default=''), default_subject=dict(type='str', required=False, default=''), recovery_default_message=dict(type='str', required=False, default=''), recovery_default_subject=dict(type='str', required=False, default=''), acknowledge_default_message=dict(type='str', required=False, default=''), acknowledge_default_subject=dict(type='str', required=False, default=''), conditions=dict(type='list', required=False, elements='dict', options=dict(formulaid=dict(type='str', required=False), operator=dict(type='str', required=True), type=dict(type='str', required=True), value=dict(type='str', required=True), value2=dict(type='str', required=False))), formula=dict(type='str', required=False, default=None), eval_type=dict(type='str', required=False, default=None, choices=['andor', 'and', 'or', 'custom_expression']), operations=dict(type='list', required=False, elements='dict', options=dict(type=dict(type='str', required=True, choices=['send_message', 'remote_command', 'add_host', 'remove_host', 'add_to_host_group', 'remove_from_host_group', 'link_to_template', 'unlink_from_template', 'enable_host', 'disable_host', 'set_host_inventory_mode']), esc_period=dict(type='int', required=False), esc_step_from=dict(type='int', required=False, default=1), esc_step_to=dict(type='int', required=False, default=1), operation_condition=dict(type='str', required=False, default=None, choices=['acknowledged', 'not_acknowledged']), command_type=dict(type='str', required=False, choices=['custom_script', 'ipmi', 'ssh', 'telnet', 'global_script']), command=dict(type='str', required=False), execute_on=dict(type='str', required=False, choices=['agent', 'server', 'proxy']), password=dict(type='str', required=False), port=dict(type='int', required=False), run_on_groups=dict(type='list', required=False), run_on_hosts=dict(type='list', required=False), script_name=dict(type='str', required=False), ssh_auth_type=dict(type='str', required=False, default='password', choices=['password', 'public_key']), ssh_privatekey_file=dict(type='str', required=False), ssh_publickey_file=dict(type='str', required=False), username=dict(type='str', required=False), media_type=dict(type='str', required=False), subject=dict(type='str', required=False), message=dict(type='str', required=False), send_to_groups=dict(type='list', required=False), send_to_users=dict(type='list', required=False), host_groups=dict(type='list', required=False), inventory=dict(type='str', required=False), templates=dict(type='list', required=False)), required_if=[['type', 'remote_command', ['command_type']], ['type', 'remote_command', ['run_on_groups', 'run_on_hosts'], True], ['command_type', 'custom_script', ['command', 'execute_on']], ['command_type', 'ipmi', ['command']], ['command_type', 'ssh', ['command', 'password', 'username', 'port', 'ssh_auth_type', 'ssh_privatekey_file', 'ssh_publickey_file']], ['command_type', 'telnet', ['command', 'password', 'username', 'port']], ['command_type', 'global_script', ['script_name']], ['type', 'add_to_host_group', ['host_groups']], ['type', 'remove_from_host_group', ['host_groups']], ['type', 'link_to_template', ['templates']], ['type', 'unlink_from_template', ['templates']], ['type', 'set_host_inventory_mode', ['inventory']], ['type', 'send_message', ['send_to_users', 'send_to_groups'], True]]), recovery_operations=dict(type='list', required=False, default=[], elements='dict', options=dict(type=dict(type='str', required=True, choices=['send_message', 'remote_command', 'notify_all_involved']), command_type=dict(type='str', required=False, choices=['custom_script', 'ipmi', 'ssh', 'telnet', 'global_script']), command=dict(type='str', required=False), execute_on=dict(type='str', required=False, choices=['agent', 'server', 'proxy']), password=dict(type='str', required=False), port=dict(type='int', required=False), run_on_groups=dict(type='list', required=False), run_on_hosts=dict(type='list', required=False), script_name=dict(type='str', required=False), ssh_auth_type=dict(type='str', required=False, default='password', choices=['password', 'public_key']), ssh_privatekey_file=dict(type='str', required=False), ssh_publickey_file=dict(type='str', required=False), username=dict(type='str', required=False), media_type=dict(type='str', required=False), subject=dict(type='str', required=False), message=dict(type='str', required=False), send_to_groups=dict(type='list', required=False), send_to_users=dict(type='list', required=False)), required_if=[['type', 'remote_command', ['command_type']], ['type', 'remote_command', ['run_on_groups', 'run_on_hosts'], True], ['command_type', 'custom_script', ['command', 'execute_on']], ['command_type', 'ipmi', ['command']], ['command_type', 'ssh', ['command', 'password', 'username', 'port', 'ssh_auth_type', 'ssh_privatekey_file', 'ssh_publickey_file']], ['command_type', 'telnet', ['command', 'password', 'username', 'port']], ['command_type', 'global_script', ['script_name']], ['type', 'send_message', ['send_to_users', 'send_to_groups'], True]]), acknowledge_operations=dict(type='list', required=False, default=[], elements='dict', options=dict(type=dict(type='str', required=True, choices=['send_message', 'remote_command', 'notify_all_involved']), command_type=dict(type='str', required=False, choices=['custom_script', 'ipmi', 'ssh', 'telnet', 'global_script']), command=dict(type='str', required=False), execute_on=dict(type='str', required=False, choices=['agent', 'server', 'proxy']), password=dict(type='str', required=False), port=dict(type='int', required=False), run_on_groups=dict(type='list', required=False), run_on_hosts=dict(type='list', required=False), script_name=dict(type='str', required=False), ssh_auth_type=dict(type='str', required=False, default='password', choices=['password', 'public_key']), ssh_privatekey_file=dict(type='str', required=False), ssh_publickey_file=dict(type='str', required=False), username=dict(type='str', required=False), media_type=dict(type='str', required=False), subject=dict(type='str', required=False), message=dict(type='str', required=False), send_to_groups=dict(type='list', required=False), send_to_users=dict(type='list', required=False)), required_if=[['type', 'remote_command', ['command_type']], ['type', 'remote_command', ['run_on_groups', 'run_on_hosts'], True], ['command_type', 'custom_script', ['command', 'execute_on']], ['command_type', 'ipmi', ['command']], ['command_type', 'ssh', ['command', 'password', 'username', 'port', 'ssh_auth_type', 'ssh_privatekey_file', 'ssh_publickey_file']], ['command_type', 'telnet', ['command', 'password', 'username', 'port']], ['command_type', 'global_script', ['script_name']], ['type', 'send_message', ['send_to_users', 'send_to_groups'], True]])), supports_check_mode=True)
+    if (not HAS_ZABBIX_API):
+        module.fail_json(msg='Missing required zabbix-api module (check docs or install with: pip install zabbix-api)')
+    server_url = module.params['server_url']
+    login_user = module.params['login_user']
+    login_password = module.params['login_password']
+    http_login_user = module.params['http_login_user']
+    http_login_password = module.params['http_login_password']
+    validate_certs = module.params['validate_certs']
+    timeout = module.params['timeout']
+    name = module.params['name']
+    esc_period = module.params['esc_period']
+    event_source = module.params['event_source']
+    state = module.params['state']
+    status = module.params['status']
+    pause_in_maintenance = module.params['pause_in_maintenance']
+    default_message = module.params['default_message']
+    default_subject = module.params['default_subject']
+    recovery_default_message = module.params['recovery_default_message']
+    recovery_default_subject = module.params['recovery_default_subject']
+    acknowledge_default_message = module.params['acknowledge_default_message']
+    acknowledge_default_subject = module.params['acknowledge_default_subject']
+    conditions = module.params['conditions']
+    formula = module.params['formula']
+    eval_type = module.params['eval_type']
+    operations = module.params['operations']
+    recovery_operations = module.params['recovery_operations']
+    acknowledge_operations = module.params['acknowledge_operations']
+    try:
+        zbx = ZabbixAPI(server_url, timeout=timeout, user=http_login_user, passwd=http_login_password, validate_certs=validate_certs)
+        zbx.login(login_user, login_password)
+    except Exception as e:
+        module.fail_json(msg=('Failed to connect to Zabbix server: %s' % e))
+    zapi_wrapper = Zapi(module, zbx)
+    action = Action(module, zbx, zapi_wrapper)
+    action_exists = zapi_wrapper.check_if_action_exists(name)
+    ops = Operations(module, zbx, zapi_wrapper)
+    recovery_ops = RecoveryOperations(module, zbx, zapi_wrapper)
+    acknowledge_ops = AcknowledgeOperations(module, zbx, zapi_wrapper)
+    fltr = Filter(module, zbx, zapi_wrapper)
+    if action_exists:
+        action_id = zapi_wrapper.get_action_by_name(name)['actionid']
+        if (state == 'absent'):
+            result = action.delete_action(action_id)
+            module.exit_json(changed=True, msg=('Action Deleted: %s, ID: %s' % (name, result)))
+        else:
+            difference = action.check_difference(action_id=action_id, name=name, event_source=event_source, esc_period=esc_period, status=status, pause_in_maintenance=pause_in_maintenance, default_message=default_message, default_subject=default_subject, recovery_default_message=recovery_default_message, recovery_default_subject=recovery_default_subject, acknowledge_default_message=acknowledge_default_message, acknowledge_default_subject=acknowledge_default_subject, operations=ops.construct_the_data(operations), recovery_operations=recovery_ops.construct_the_data(recovery_operations), acknowledge_operations=acknowledge_ops.construct_the_data(acknowledge_operations), conditions=fltr.construct_the_data(eval_type, formula, conditions))
+            if (difference == {
+                
+            }):
+                module.exit_json(changed=False, msg=('Action is up to date: %s' % name))
+            else:
+                result = action.update_action(action_id=action_id, **difference)
+                module.exit_json(changed=True, msg=('Action Updated: %s, ID: %s' % (name, result)))
+    elif (state == 'absent'):
+        module.exit_json(changed=False)
+    else:
+        action_id = action.add_action(name=name, event_source=event_source, esc_period=esc_period, status=status, pause_in_maintenance=pause_in_maintenance, default_message=default_message, default_subject=default_subject, recovery_default_message=recovery_default_message, recovery_default_subject=recovery_default_subject, acknowledge_default_message=acknowledge_default_message, acknowledge_default_subject=acknowledge_default_subject, operations=ops.construct_the_data(operations), recovery_operations=recovery_ops.construct_the_data(recovery_operations), acknowledge_operations=acknowledge_ops.construct_the_data(acknowledge_operations), conditions=fltr.construct_the_data(eval_type, formula, conditions))
+        module.exit_json(changed=True, msg=('Action created: %s, ID: %s' % (name, action_id)))

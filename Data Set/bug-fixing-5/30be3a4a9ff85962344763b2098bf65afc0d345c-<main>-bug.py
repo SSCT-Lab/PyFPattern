@@ -1,0 +1,6 @@
+def main():
+    'Module main'
+    argument_spec = dict(agent_ip=dict(required=False, type='str'), source_ip=dict(required=False, type='str'), export_route=dict(required=False, type='str', choices=['enable', 'disable']), collector_id=dict(required=False, type='str', choices=['1', '2']), collector_ip=dict(required=False, type='str'), collector_ip_vpn=dict(required=False, type='str'), collector_datagram_size=dict(required=False, type='str'), collector_udp_port=dict(required=False, type='str'), collector_meth=dict(required=False, type='str', choices=['meth', 'enhanced']), collector_description=dict(required=False, type='str'), sflow_interface=dict(required=False, type='str'), sample_collector=dict(required=False, type='list'), sample_rate=dict(required=False, type='str'), sample_length=dict(required=False, type='str'), sample_direction=dict(required=False, type='str', choices=['inbound', 'outbound', 'both']), counter_collector=dict(required=False, type='list'), counter_interval=dict(required=False, type='str'), state=dict(required=False, default='present', choices=['present', 'absent']))
+    argument_spec.update(ce_argument_spec)
+    module = Sflow(argument_spec)
+    module.work()

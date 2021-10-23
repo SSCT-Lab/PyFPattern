@@ -1,0 +1,3 @@
+def icdf(self, x):
+    'Evaluates the inverse cumulative distribution function at the given points.\n\n        Args:\n            x(:class:`~chainer.Variable` or :class:`numpy.ndarray` or             :class:`cupy.ndarray`): Data points in the domain of the\n                distribution\n\n        Returns:\n            ~chainer.Variable: Inverse cumulative distribution function value\n            evaluated at `x`.\n\n        '
+    raise NotImplementedError

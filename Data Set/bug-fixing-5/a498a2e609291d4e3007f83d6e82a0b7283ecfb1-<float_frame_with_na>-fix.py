@@ -1,0 +1,7 @@
+@pytest.fixture
+def float_frame_with_na():
+    "\n    Fixture for DataFrame of floats with index of unique strings\n\n    Columns are ['A', 'B', 'C', 'D']; some entries are missing\n\n                       A         B         C         D\n    ABwBzA0ljw -1.128865 -0.897161  0.046603  0.274997\n    DJiRzmbyQF  0.728869  0.233502  0.722431 -0.890872\n    neMgPD5UBF  0.486072 -1.027393 -0.031553  1.449522\n    0yWA4n8VeX -1.937191 -1.142531  0.805215 -0.462018\n    3slYUbbqU1  0.153260  1.164691  1.489795 -0.545826\n    soujjZ0A08       NaN       NaN       NaN       NaN\n    7W6NLGsjB9       NaN       NaN       NaN       NaN\n    ...              ...       ...       ...       ...\n    uhfeaNkCR1 -0.231210 -0.340472  0.244717 -0.901590\n    n6p7GYuBIV -0.419052  1.922721 -0.125361 -0.727717\n    ZhzAeY6p1y  1.234374 -1.425359 -0.827038 -0.633189\n    uWdPsORyUh  0.046738 -0.980445 -1.102965  0.605503\n    3DJA6aN590 -0.091018 -1.684734 -1.100900  0.215947\n    2GBPAzdbMk -2.883405 -1.021071  1.209877  1.633083\n    sHadBoyVHw -2.223032 -0.326384  0.258931  0.245517\n\n    [30 rows x 4 columns]\n    "
+    df = DataFrame(tm.getSeriesData())
+    df.loc[5:10] = np.nan
+    df.loc[15:20, (- 2):] = np.nan
+    return df

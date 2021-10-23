@@ -1,0 +1,33 @@
+def __init__(self, argument_spec):
+    self.spec = argument_spec
+    self.module = None
+    self.init_module()
+    self.interface = self.module.params['interface']
+    self.vrid = self.module.params['vrid']
+    self.virtual_ip = self.module.params['virtual_ip']
+    self.vrrp_type = self.module.params['vrrp_type']
+    self.admin_ignore_if_down = ('false' if (self.module.params['admin_ignore_if_down'] is False) else 'true')
+    self.admin_vrid = self.module.params['admin_vrid']
+    self.admin_interface = self.module.params['admin_interface']
+    self.admin_flowdown = ('false' if (self.module.params['admin_flowdown'] is False) else 'true')
+    self.priority = self.module.params['priority']
+    self.version = self.module.params['version']
+    self.advertise_interval = self.module.params['advertise_interval']
+    self.preempt_timer_delay = self.module.params['preempt_timer_delay']
+    self.gratuitous_arp_interval = self.module.params['gratuitous_arp_interval']
+    self.recover_delay = self.module.params['recover_delay']
+    self.holding_multiplier = self.module.params['holding_multiplier']
+    self.auth_mode = self.module.params['auth_mode']
+    self.is_plain = ('false' if (self.module.params['is_plain'] is False) else 'true')
+    self.auth_key = self.module.params['auth_key']
+    self.fast_resume = self.module.params['fast_resume']
+    self.state = self.module.params['state']
+    self.vrrp_global_info = None
+    self.virtual_ip_info = None
+    self.vrrp_group_info = None
+    self.changed = False
+    self.updates_cmd = list()
+    self.results = dict()
+    self.existing = dict()
+    self.proposed = dict()
+    self.end_state = dict()

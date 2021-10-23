@@ -1,0 +1,3 @@
+def log_survival_function(self, x):
+    'Evaluates the logarithm of survival function at the given points.\n\n        Args:\n            x(:class:`~chainer.Variable` or :class:`numpy.ndarray` or             :class:`cupy.ndarray`): Data points in the domain of the\n            distribution\n\n        Returns:\n            ~chainer.Variable: Logarithm of survival function value evaluated\n            at `x`.\n\n        '
+    raise NotImplementedError

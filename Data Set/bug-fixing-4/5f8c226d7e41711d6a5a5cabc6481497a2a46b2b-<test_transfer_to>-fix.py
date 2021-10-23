@@ -1,0 +1,12 @@
+def test_transfer_to(self):
+    from_org = self.create_organization()
+    from_team = self.create_team(organization=from_org)
+    project = self.create_project(team=from_team)
+    to_org = self.create_organization()
+    to_team = self.create_team(organization=to_org)
+    project.transfer_to(to_team)
+    project = Project.objects.get(id=project.id)
+    assert (project.team_id == to_team.id)
+    assert (project.teams.count() == 1)
+    assert (project.teams.first() == to_team)
+    assert (project.organization_id == to_org.id)

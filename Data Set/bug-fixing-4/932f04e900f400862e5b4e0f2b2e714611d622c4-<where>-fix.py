@@ -1,0 +1,5 @@
+def where(self, cond, value, other=None, subset=None, **kwargs):
+    '\n        Apply a function elementwise.\n\n        Updates the HTML representation with a style which is\n        selected in accordance with the return value of a function.\n\n        .. versionadded:: 0.21.0\n\n        Parameters\n        ----------\n        cond : callable\n            ``cond`` should take a scalar and return a boolean.\n        value : str\n            Applied when ``cond`` returns true.\n        other : str\n            Applied when ``cond`` returns false.\n        subset : IndexSlice\n            A valid indexer to limit ``data`` to *before* applying the\n            function. Consider using a pandas.IndexSlice.\n        **kwargs : dict\n            Pass along to ``cond``.\n\n        Returns\n        -------\n        self : Styler\n\n        See Also\n        --------\n        Styler.applymap\n        '
+    if (other is None):
+        other = ''
+    return self.applymap((lambda val: (value if cond(val) else other)), subset=subset, **kwargs)

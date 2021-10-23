@@ -1,0 +1,4 @@
+def table(ax, data, rowLabels=None, colLabels=None, **kwargs):
+    '\n    Helper function to convert DataFrame and Series to matplotlib.table\n\n    Parameters\n    ----------\n    ax : Matplotlib axes object\n    data : DataFrame or Series\n        data for table contents\n    kwargs : keywords, optional\n        keyword arguments which passed to matplotlib.table.table.\n        If `rowLabels` or `colLabels` is not specified, data index or column\n        name will be used.\n\n    Returns\n    -------\n    matplotlib table object\n    '
+    plot_backend = _get_plot_backend('matplotlib')
+    return plot_backend.table(ax=ax, data=data, rowLabels=None, colLabels=None, **kwargs)

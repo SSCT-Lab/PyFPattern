@@ -1,0 +1,5 @@
+def from_estimator(estimator, serving_input_receiver_fn, output_key=None, graph=None):
+    'Constructs a `Predictor` from a `tf.python.estimator.Estimator`.\n\n  Args:\n    estimator: an instance of `learn.python.estimator.Estimator`.\n    serving_input_receiver_fn: a function that takes no arguments and returns\n      an instance of `ServingInputReceiver` compatible with `estimator`.\n    output_key: Optional string specifying the export output to use. If\n      `None`, then `DEFAULT_SERVING_SIGNATURE_DEF_KEY` is used.\n    graph: Optional. The Tensorflow `graph` in which prediction should be\n      done.\n\n  Returns:\n    An initialized `Predictor`.\n\n  Raises:\n    TypeError: if `estimator` is a contrib `Estimator` instead of a core\n      `Estimator`.\n  '
+    if isinstance(estimator, contrib_estimator.Estimator):
+        raise TypeError('Espected estimator to be of type tf.python.estimator.Estimator, but got type tf.contrib.learn.Estimator. You likely want to call from_contrib_estimator.')
+    return core_estimator_predictor.CoreEstimatorPredictor(estimator, serving_input_receiver_fn, output_key=output_key, graph=graph)

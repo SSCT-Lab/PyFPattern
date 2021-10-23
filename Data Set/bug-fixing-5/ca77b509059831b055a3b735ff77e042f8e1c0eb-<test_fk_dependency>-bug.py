@@ -1,0 +1,18 @@
+def test_fk_dependency(self):
+    'Tests that having a ForeignKey automatically adds a dependency.'
+    before = self.make_project_state([])
+    after = self.make_project_state([self.author_name, self.book, self.edition])
+    autodetector = MigrationAutodetector(before, after)
+    changes = autodetector._detect_changes()
+    self.assertNumberMigrations(changes, 'testapp', 1)
+    self.assertOperationTypes(changes, 'testapp', 0, ['CreateModel'])
+    self.assertOperationAttributes(changes, 'testapp', 0, 0, name='Author')
+    self.assertMigrationDependencies(changes, 'testapp', 0, [])
+    self.assertNumberMigrations(changes, 'otherapp', 1)
+    self.assertOperationTypes(changes, 'otherapp', 0, ['CreateModel'])
+    self.assertOperationAttributes(changes, 'otherapp', 0, 0, name='Book')
+    self.assertMigrationDependencies(changes, 'otherapp', 0, [('testapp', 'auto_1')])
+    self.assertNumberMigrations(changes, 'thirdapp', 1)
+    self.assertOperationTypes(changes, 'thirdapp', 0, ['CreateModel'])
+    self.assertOperationAttributes(changes, 'thirdapp', 0, 0, name='Edition')
+    self.assertMigrationDependencies(changes, 'thirdapp', 0, [('otherapp', 'auto_1')])

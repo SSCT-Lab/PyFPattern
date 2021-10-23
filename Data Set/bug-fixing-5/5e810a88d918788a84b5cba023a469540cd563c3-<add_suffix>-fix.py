@@ -1,0 +1,7 @@
+def add_suffix(self, suffix: str):
+    "\n        Suffix labels with string `suffix`.\n\n        For Series, the row labels are suffixed.\n        For DataFrame, the column labels are suffixed.\n\n        Parameters\n        ----------\n        suffix : str\n            The string to add after each label.\n\n        Returns\n        -------\n        Series or DataFrame\n            New Series or DataFrame with updated labels.\n\n        See Also\n        --------\n        Series.add_prefix: Prefix row labels with string `prefix`.\n        DataFrame.add_prefix: Prefix column labels with string `prefix`.\n\n        Examples\n        --------\n        >>> s = pd.Series([1, 2, 3, 4])\n        >>> s\n        0    1\n        1    2\n        2    3\n        3    4\n        dtype: int64\n\n        >>> s.add_suffix('_item')\n        0_item    1\n        1_item    2\n        2_item    3\n        3_item    4\n        dtype: int64\n\n        >>> df = pd.DataFrame({'A': [1, 2, 3, 4], 'B': [3, 4, 5, 6]})\n        >>> df\n           A  B\n        0  1  3\n        1  2  4\n        2  3  5\n        3  4  6\n\n        >>> df.add_suffix('_col')\n             A_col  B_col\n        0       1       3\n        1       2       4\n        2       3       5\n        3       4       6\n        "
+    f = functools.partial('{}{suffix}'.format, suffix=suffix)
+    mapper = {
+        self._info_axis_name: f,
+    }
+    return self.rename(**mapper)

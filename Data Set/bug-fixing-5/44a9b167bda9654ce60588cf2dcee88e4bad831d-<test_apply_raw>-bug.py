@@ -1,0 +1,10 @@
+def test_apply_raw(self):
+    result0 = self.frame.apply(np.mean, raw=True)
+    result1 = self.frame.apply(np.mean, axis=1, raw=True)
+    expected0 = self.frame.apply((lambda x: x.values.mean()))
+    expected1 = self.frame.apply((lambda x: x.values.mean()), axis=1)
+    assert_series_equal(result0, expected0)
+    assert_series_equal(result1, expected1)
+    result = self.frame.apply((lambda x: (x * 2)), raw=True)
+    expected = (self.frame * 2)
+    assert_frame_equal(result, expected)

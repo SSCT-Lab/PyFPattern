@@ -1,0 +1,4 @@
+def kullback_leibler(vec1, vec2, num_features=None):
+    'Calculate Kullback-Leibler distance between two probability distributions using `scipy.stats.entropy`.\n\n    Parameters\n    ----------\n    vec1 : {scipy.sparse, numpy.ndarray, list of (int, float)}\n        Distribution vector.\n    vec2 : {scipy.sparse, numpy.ndarray, list of (int, float)}\n        Distribution vector.\n    num_features : int, optional\n        Number of features in vector.\n\n    Returns\n    -------\n    float\n        Kullback-Leibler distance between `vec1` and `vec2`.\n        Value in range [0, +∞) where values closer to 0 mean less distance (and a higher similarity).\n\n    '
+    (vec1, vec2) = convert_vec(vec1, vec2, num_features=num_features)
+    return entropy(vec1, vec2)

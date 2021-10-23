@@ -1,0 +1,8 @@
+def _construction_repr(dtype, include_align=False, short=False):
+    "\n    Creates a string repr of the dtype, excluding the 'dtype()' part\n    surrounding the object. This object may be a string, a list, or\n    a dict depending on the nature of the dtype. This\n    is the object passed as the first parameter to the dtype\n    constructor, and if no additional constructor parameters are\n    given, will reproduce the exact memory layout.\n\n    Parameters\n    ----------\n    short : bool\n        If true, this creates a shorter repr using 'kind' and 'itemsize', instead\n        of the longer type name.\n\n    include_align : bool\n        If true, this includes the 'align=True' parameter\n        inside the struct dtype construction dict when needed. Use this flag\n        if you want a proper repr string without the 'dtype()' part around it.\n\n        If false, this does not preserve the\n        'align=True' parameter or sticky NPY_ALIGNED_STRUCT flag for\n        struct arrays like the regular repr does, because the 'align'\n        flag is not part of first dtype constructor parameter. This\n        mode is intended for a full 'repr', where the 'align=True' is\n        provided as the second parameter.\n    "
+    if (dtype.fields is not None):
+        return _struct_str(dtype, include_align=include_align)
+    elif dtype.subdtype:
+        return _subarray_str(dtype)
+    else:
+        return _scalar_str(dtype, short=short)

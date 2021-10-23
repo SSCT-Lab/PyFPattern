@@ -1,0 +1,5 @@
+@set_module('mxnet.symbol.numpy')
+@wrap_np_binary_func
+def lcm(x1, x2, out=None, **kwargs):
+    '\n    Returns the lowest common multiple of ``|x1|`` and ``|x2|``\n\n    Parameters\n    ----------\n    x1, x2 : ndarrays or scalar values\n        The arrays for computing lowest common multiple. If x1.shape != x2.shape,\n        they must be broadcastable to a common shape (which may be the shape of\n        one or the other).\n\n    out : ndarray or None, optional\n        A location into which the result is stored. If provided, it must have a shape\n        that the inputs broadcast to. If not provided or None, a freshly-allocated array\n        is returned.\n\n    Returns\n    -------\n    y : ndarray or scalar\n        The lowest common multiple of the absolute value of the inputs\n        This is a scalar if both `x1` and `x2` are scalars.\n\n    See Also\n    --------\n    gcd : The greatest common divisor\n    '
+    return _ufunc_helper(x1, x2, _npi.lcm, _np.lcm, _npi.lcm_scalar, None, out)

@@ -1,0 +1,20 @@
+def test_all_nans(self, date_range_frame):
+    result = DataFrame([np.nan]).asof([0])
+    expected = DataFrame([np.nan])
+    tm.assert_frame_equal(result, expected)
+    N = 150
+    rng = date_range_frame.index
+    dates = date_range('1/1/1990', periods=N, freq='25s')
+    result = DataFrame(np.nan, index=rng, columns=['A']).asof(dates)
+    expected = DataFrame(np.nan, index=dates, columns=['A'])
+    tm.assert_frame_equal(result, expected)
+    dates = date_range('1/1/1990', periods=N, freq='25s')
+    result = DataFrame(np.nan, index=rng, columns=['A', 'B', 'C']).asof(dates)
+    expected = DataFrame(np.nan, index=dates, columns=['A', 'B', 'C'])
+    tm.assert_frame_equal(result, expected)
+    result = DataFrame(np.nan, index=[1, 2], columns=['A', 'B']).asof([3])
+    expected = DataFrame(np.nan, index=[3], columns=['A', 'B'])
+    tm.assert_frame_equal(result, expected)
+    result = DataFrame(np.nan, index=[1, 2], columns=['A', 'B']).asof(3)
+    expected = Series(np.nan, index=['A', 'B'], name=3)
+    tm.assert_series_equal(result, expected)

@@ -1,0 +1,2 @@
+def test_trigram_similarity_alternate(self):
+    self.assertQuerysetEqual(self.Model.objects.annotate(distance=TrigramDistance('field', 'Bat sat on cat.')).filter(distance__lte=0.7).order_by('distance'), [('Cat sat on mat.', 0.375), ('Dog sat on rug.', 0.666667)], transform=(lambda instance: (instance.field, instance.distance)), ordered=True)

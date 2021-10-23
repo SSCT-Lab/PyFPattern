@@ -1,0 +1,4 @@
+@classmethod
+def _from_sequence_of_strings(cls, strings, dtype=None, copy=False):
+    'Construct a new ExtensionArray from a sequence of strings.\n\n        .. versionadded:: 0.24.0\n\n        Parameters\n        ----------\n        strings : Sequence\n            Each element will be an instance of the scalar type for this\n            array, ``cls.dtype.type``.\n        dtype : dtype, optional\n            Construct for this particular dtype. This should be a Dtype\n            compatible with the ExtensionArray.\n        copy : boolean, default False\n            If True, copy the underlying data.\n\n        Returns\n        -------\n        ExtensionArray\n        '
+    raise AbstractMethodError(cls)

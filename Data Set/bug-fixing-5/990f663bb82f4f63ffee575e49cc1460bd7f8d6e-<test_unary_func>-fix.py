@@ -1,0 +1,11 @@
+def test_unary_func():
+    x = nd.uniform(shape=(4, 5))
+    f_exp = (lambda x: nd.exp(x))
+    f_exp_grad = (lambda x: [nd.exp(x)])
+    autograd_assert(x, func=f_exp, grad_func=f_exp_grad)
+    f_half = (lambda x: (x / 2))
+    f_half_grad = (lambda x: [(nd.ones(x.shape) * 0.5)])
+    autograd_assert(x, func=f_half, grad_func=f_half_grad)
+    f_square = (lambda x: (x ** 2))
+    f_square_grad = (lambda x: [(2 * x)])
+    autograd_assert(x, func=f_square, grad_func=f_square_grad)

@@ -1,0 +1,16 @@
+def test_var_std(self):
+    alt = (lambda x: np.std(x, ddof=1))
+    self._check_stat_op('std', alt)
+    alt = (lambda x: np.var(x, ddof=1))
+    self._check_stat_op('var', alt)
+    result = self.ts.std(ddof=4)
+    expected = np.std(self.ts.values, ddof=4)
+    assert_almost_equal(result, expected)
+    result = self.ts.var(ddof=4)
+    expected = np.var(self.ts.values, ddof=4)
+    assert_almost_equal(result, expected)
+    s = self.ts.iloc[[0]]
+    result = s.var(ddof=1)
+    assert isna(result)
+    result = s.std(ddof=1)
+    assert isna(result)

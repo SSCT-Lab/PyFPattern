@@ -1,0 +1,4 @@
+def modules(self):
+    "Returns an iterator over all modules in the network.\n\n        Yields:\n            Module: a module in the network\n\n        Note:\n            Duplicate modules are returned only once. In the following\n            example, ``l`` will be returned only once.\n\n            >>> l = nn.Linear(2, 2)\n            >>> net = nn.Sequential(l, l)\n            >>> for idx, m in enumerate(net.modules()):\n            >>>     print(idx, '->', m)\n            0 -> Sequential (\n              (0): Linear (2 -> 2)\n              (1): Linear (2 -> 2)\n            )\n            1 -> Linear (2 -> 2)\n        "
+    for (name, module) in self.named_modules():
+        (yield module)

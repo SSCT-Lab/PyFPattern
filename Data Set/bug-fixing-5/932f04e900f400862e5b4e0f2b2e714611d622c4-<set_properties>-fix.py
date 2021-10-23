@@ -1,0 +1,5 @@
+def set_properties(self, subset=None, **kwargs):
+    '\n        Method to set one or more non-data dependent properties or each cell.\n\n        Parameters\n        ----------\n        subset : IndexSlice\n            A valid slice for ``data`` to limit the style application to.\n        **kwargs : dict\n            A dictionary of property, value pairs to be set for each cell.\n\n        Returns\n        -------\n        self : Styler\n\n        Examples\n        --------\n        >>> df = pd.DataFrame(np.random.randn(10, 4))\n        >>> df.style.set_properties(color="white", align="right")\n        >>> df.style.set_properties(**{\'background-color\': \'yellow\'})\n        '
+    values = ';'.join(('{p}: {v}'.format(p=p, v=v) for (p, v) in kwargs.items()))
+    f = (lambda x: values)
+    return self.applymap(f, subset=subset)

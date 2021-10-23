@@ -1,0 +1,12 @@
+def masked_values(x, value, rtol=1e-05, atol=1e-08, copy=True, shrink=True):
+    '\n    Mask using floating point equality.\n\n    Return a MaskedArray, masked where the data in array `x` are approximately\n    equal to `value`, i.e. where the following condition is True\n\n    (abs(x - value) <= atol+rtol*abs(value))\n\n    The fill_value is set to `value` and the mask is set to ``nomask`` if\n    possible.  For integers, consider using ``masked_equal``.\n\n    Parameters\n    ----------\n    x : array_like\n        Array to mask.\n    value : float\n        Masking value.\n    rtol : float, optional\n        Tolerance parameter.\n    atol : float, optional\n        Tolerance parameter (1e-8).\n    copy : bool, optional\n        Whether to return a copy of `x`.\n    shrink : bool, optional\n        Whether to collapse a mask full of False to ``nomask``.\n\n    Returns\n    -------\n    result : MaskedArray\n        The result of masking `x` where approximately equal to `value`.\n\n    See Also\n    --------\n    masked_where : Mask where a condition is met.\n    masked_equal : Mask where equal to a given value (integers).\n\n    Examples\n    --------\n    >>> import numpy.ma as ma\n    >>> x = np.array([1, 1.1, 2, 1.1, 3])\n    >>> ma.masked_values(x, 1.1)\n    masked_array(data = [1.0 -- 2.0 -- 3.0],\n          mask = [False  True False  True False],\n          fill_value=1.1)\n\n    Note that `mask` is set to ``nomask`` if possible.\n\n    >>> ma.masked_values(x, 1.5)\n    masked_array(data = [ 1.   1.1  2.   1.1  3. ],\n          mask = False,\n          fill_value=1.5)\n\n    For integers, the fill value will be different in general to the\n    result of ``masked_equal``.\n\n    >>> x = np.arange(5)\n    >>> x\n    array([0, 1, 2, 3, 4])\n    >>> ma.masked_values(x, 2)\n    masked_array(data = [0 1 -- 3 4],\n          mask = [False False  True False False],\n          fill_value=2)\n    >>> ma.masked_equal(x, 2)\n    masked_array(data = [0 1 -- 3 4],\n          mask = [False False  True False False],\n          fill_value=999999)\n\n    '
+    mabs = umath.absolute
+    xnew = filled(x, value)
+    if issubclass(xnew.dtype.type, np.floating):
+        condition = umath.less_equal(mabs((xnew - value)), (atol + (rtol * mabs(value))))
+        mask = getattr(x, '_mask', nomask)
+    else:
+        condition = umath.equal(xnew, value)
+        mask = nomask
+    mask = mask_or(mask, make_mask(condition, shrink=shrink), shrink=shrink)
+    return masked_array(xnew, mask=mask, copy=copy, fill_value=value)
