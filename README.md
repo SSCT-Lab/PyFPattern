@@ -18,3 +18,11 @@ Bug-fixing-5 mainly contains code changes in multiple locations but in one file.
 Open Source Projects: four open source project datasets (tensorlayer,powerline,mopidy,flask)
 
 QuixBugs (Python): https://jkoppel.github.io/QuixBugs/ 
+
+※Source Code:
+
+diffFile/miningPattern: Run this file. getHunks() function is used to filter single hunk bugs; compare_AST_distance() function is used to calculate the AST edit distance.
+
+diffFile/reWriteName.py: This class is used in the data pre-processing phase to rename the source code.
+
+ddg: Get program's data dependency graph
